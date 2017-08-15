@@ -7,21 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		803CAEACBF8043E5D7406FC5 /* Pods_Bingo_Chat_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36F1895E026414AB585D3C8E /* Pods_Bingo_Chat_App.framework */; };
+		AB238F3A1F43402B00AF86FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB238F391F43402B00AF86FA /* GoogleService-Info.plist */; };
 		AB36D10C1F43221100B3E2CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D10B1F43221100B3E2CD /* AppDelegate.swift */; };
-		AB36D10E1F43221100B3E2CD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D10D1F43221100B3E2CD /* ViewController.swift */; };
 		AB36D1111F43221200B3E2CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB36D10F1F43221200B3E2CD /* Main.storyboard */; };
 		AB36D1131F43221200B3E2CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB36D1121F43221200B3E2CD /* Assets.xcassets */; };
 		AB36D1161F43221200B3E2CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB36D1141F43221200B3E2CD /* LaunchScreen.storyboard */; };
+		AB36D11E1F43239600B3E2CD /* AllPeopleTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D11D1F43239600B3E2CD /* AllPeopleTableController.swift */; };
+		AB36D1211F43251500B3E2CD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D1201F43251500B3E2CD /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		36F1895E026414AB585D3C8E /* Pods_Bingo_Chat_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bingo_Chat_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E10967627999E4E7E686EE3 /* Pods-Bingo Chat App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bingo Chat App.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App.release.xcconfig"; sourceTree = "<group>"; };
+		AB238F391F43402B00AF86FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AB36D1081F43221100B3E2CD /* Bingo Chat App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bingo Chat App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB36D10B1F43221100B3E2CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AB36D10D1F43221100B3E2CD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AB36D1101F43221200B3E2CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AB36D1121F43221200B3E2CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB36D1151F43221200B3E2CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB36D1171F43221200B3E2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB36D11D1F43239600B3E2CD /* AllPeopleTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AllPeopleTableController.swift; path = "All People/AllPeopleTableController.swift"; sourceTree = "<group>"; };
+		AB36D1201F43251500B3E2CD /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = Controllers/LoginController.swift; sourceTree = "<group>"; };
+		B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bingo Chat App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +37,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				803CAEACBF8043E5D7406FC5 /* Pods_Bingo_Chat_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E7861C4E81F0F297ED3B436 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */,
+				6E10967627999E4E7E686EE3 /* Pods-Bingo Chat App.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		75CFE59500BC76E4ED5D1028 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				36F1895E026414AB585D3C8E /* Pods_Bingo_Chat_App.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AB36D0FF1F43221100B3E2CD = {
 			isa = PBXGroup;
 			children = (
 				AB36D10A1F43221100B3E2CD /* Bingo Chat App */,
 				AB36D1091F43221100B3E2CD /* Products */,
+				4E7861C4E81F0F297ED3B436 /* Pods */,
+				75CFE59500BC76E4ED5D1028 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +82,24 @@
 		AB36D10A1F43221100B3E2CD /* Bingo Chat App */ = {
 			isa = PBXGroup;
 			children = (
+				AB36D11F1F4324DE00B3E2CD /* Controllers */,
 				AB36D10B1F43221100B3E2CD /* AppDelegate.swift */,
-				AB36D10D1F43221100B3E2CD /* ViewController.swift */,
 				AB36D10F1F43221200B3E2CD /* Main.storyboard */,
 				AB36D1121F43221200B3E2CD /* Assets.xcassets */,
 				AB36D1141F43221200B3E2CD /* LaunchScreen.storyboard */,
 				AB36D1171F43221200B3E2CD /* Info.plist */,
+				AB238F391F43402B00AF86FA /* GoogleService-Info.plist */,
 			);
 			path = "Bingo Chat App";
+			sourceTree = "<group>";
+		};
+		AB36D11F1F4324DE00B3E2CD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AB36D1201F43251500B3E2CD /* LoginController.swift */,
+				AB36D11D1F43239600B3E2CD /* AllPeopleTableController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +109,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AB36D11A1F43221200B3E2CD /* Build configuration list for PBXNativeTarget "Bingo Chat App" */;
 			buildPhases = (
+				A40AB1824F02B9719C6E839B /* [CP] Check Pods Manifest.lock */,
 				AB36D1041F43221100B3E2CD /* Sources */,
 				AB36D1051F43221100B3E2CD /* Frameworks */,
 				AB36D1061F43221100B3E2CD /* Resources */,
+				7EA570244CD8A4FA47E34F2B /* [CP] Embed Pods Frameworks */,
+				637E5991D477F3F9B4E4DE12 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -96,6 +137,7 @@
 				TargetAttributes = {
 					AB36D1071F43221100B3E2CD = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 5C332PLDTQ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -124,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB36D1161F43221200B3E2CD /* LaunchScreen.storyboard in Resources */,
+				AB238F3A1F43402B00AF86FA /* GoogleService-Info.plist in Resources */,
 				AB36D1131F43221200B3E2CD /* Assets.xcassets in Resources */,
 				AB36D1111F43221200B3E2CD /* Main.storyboard in Resources */,
 			);
@@ -131,13 +174,72 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		637E5991D477F3F9B4E4DE12 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7EA570244CD8A4FA47E34F2B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A40AB1824F02B9719C6E839B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bingo Chat App-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AB36D1041F43221100B3E2CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB36D10E1F43221100B3E2CD /* ViewController.swift in Sources */,
 				AB36D10C1F43221100B3E2CD /* AppDelegate.swift in Sources */,
+				AB36D1211F43251500B3E2CD /* LoginController.swift in Sources */,
+				AB36D11E1F43239600B3E2CD /* AllPeopleTableController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,8 +362,10 @@
 		};
 		AB36D11B1F43221200B3E2CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 5C332PLDTQ;
 				INFOPLIST_FILE = "Bingo Chat App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "bid.Bingo-Chat-App";
@@ -272,8 +376,10 @@
 		};
 		AB36D11C1F43221200B3E2CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E10967627999E4E7E686EE3 /* Pods-Bingo Chat App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 5C332PLDTQ;
 				INFOPLIST_FILE = "Bingo Chat App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "bid.Bingo-Chat-App";
@@ -301,6 +407,7 @@
 				AB36D11C1F43221200B3E2CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
