@@ -13,8 +13,10 @@
 		AB36D1111F43221200B3E2CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB36D10F1F43221200B3E2CD /* Main.storyboard */; };
 		AB36D1131F43221200B3E2CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB36D1121F43221200B3E2CD /* Assets.xcassets */; };
 		AB36D1161F43221200B3E2CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB36D1141F43221200B3E2CD /* LaunchScreen.storyboard */; };
-		AB36D11E1F43239600B3E2CD /* AllPeopleTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D11D1F43239600B3E2CD /* AllPeopleTableController.swift */; };
+		AB36D11E1F43239600B3E2CD /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D11D1F43239600B3E2CD /* MessagesController.swift */; };
 		AB36D1211F43251500B3E2CD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D1201F43251500B3E2CD /* LoginController.swift */; };
+		ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42421F487E84000F1E9D /* NewMessageController.swift */; };
+		ABDB42461F488740000F1E9D /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42451F488740000F1E9D /* Users.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +29,10 @@
 		AB36D1121F43221200B3E2CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB36D1151F43221200B3E2CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB36D1171F43221200B3E2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AB36D11D1F43239600B3E2CD /* AllPeopleTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AllPeopleTableController.swift; path = "All People/AllPeopleTableController.swift"; sourceTree = "<group>"; };
+		AB36D11D1F43239600B3E2CD /* MessagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesController.swift; path = "All People/MessagesController.swift"; sourceTree = "<group>"; };
 		AB36D1201F43251500B3E2CD /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = Controllers/LoginController.swift; sourceTree = "<group>"; };
+		ABDB42421F487E84000F1E9D /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
+		ABDB42451F488740000F1E9D /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bingo Chat App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,6 +86,7 @@
 		AB36D10A1F43221100B3E2CD /* Bingo Chat App */ = {
 			isa = PBXGroup;
 			children = (
+				ABDB42441F488723000F1E9D /* Model */,
 				AB36D11F1F4324DE00B3E2CD /* Controllers */,
 				AB36D10B1F43221100B3E2CD /* AppDelegate.swift */,
 				AB36D10F1F43221200B3E2CD /* Main.storyboard */,
@@ -97,9 +102,18 @@
 			isa = PBXGroup;
 			children = (
 				AB36D1201F43251500B3E2CD /* LoginController.swift */,
-				AB36D11D1F43239600B3E2CD /* AllPeopleTableController.swift */,
+				AB36D11D1F43239600B3E2CD /* MessagesController.swift */,
+				ABDB42421F487E84000F1E9D /* NewMessageController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		ABDB42441F488723000F1E9D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ABDB42451F488740000F1E9D /* Users.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,9 +251,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */,
 				AB36D10C1F43221100B3E2CD /* AppDelegate.swift in Sources */,
+				ABDB42461F488740000F1E9D /* Users.swift in Sources */,
 				AB36D1211F43251500B3E2CD /* LoginController.swift in Sources */,
-				AB36D11E1F43239600B3E2CD /* AllPeopleTableController.swift in Sources */,
+				AB36D11E1F43239600B3E2CD /* MessagesController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +383,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 5C332PLDTQ;
 				INFOPLIST_FILE = "Bingo Chat App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "bid.Bingo-Chat-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -381,6 +398,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 5C332PLDTQ;
 				INFOPLIST_FILE = "Bingo Chat App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "bid.Bingo-Chat-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";

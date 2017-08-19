@@ -9,15 +9,37 @@
 import UIKit
 import Firebase
 
-class AllPeopleTableController: UITableViewController {
+class MessagesController: UITableViewController {
 
     @IBOutlet weak var logoutBtn: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        checkIfUserLoggedIn()
+    }
+    
+    func checkIfUserLoggedIn(){
+        
         if Auth.auth().currentUser?.uid == nil {
             self.perform(#selector(presentLoginScreen), with: nil, afterDelay: 0)
         }
+        else{
+            let uid = Auth.auth().currentUser?.uid
+            Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String:Any] {
+                    self.navigationItem.title = dictionary["name"] as? String
+                }
+                
+            })
+        }
+        
         
     }
     

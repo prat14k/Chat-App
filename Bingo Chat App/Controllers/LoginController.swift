@@ -9,15 +9,17 @@
 import UIKit
 import Firebase
 
-class LoginController: UIViewController {
+class LoginController: UIViewController , UIImagePickerControllerDelegate , UINavigationControllerDelegate {
 
     @IBOutlet weak var registerNameTF: UITextField!
     @IBOutlet weak var registerEmailTF: UITextField!
     @IBOutlet weak var registerPasswordTF: UITextField!
     
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var loginEmailTF: UITextField!
     @IBOutlet weak var loginPasswordTF: UITextField!
     
+    @IBOutlet weak var segmentOutlet: UISegmentedControl!
     
     @IBOutlet weak var loginView: UIView!
     @IBOutlet weak var registerView: UIView!
@@ -38,6 +40,39 @@ class LoginController: UIViewController {
         
     }
 
+    @IBAction func imagePickAction(_ sender: UITapGestureRecognizer) {
+        let pickerView = UIImagePickerController()
+        pickerView.allowsEditing = true
+        pickerView.delegate = self
+        pickerView.sourceType = .photoLibrary
+        present(pickerView, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if(segmentOutlet.selectedSegmentIndex == 0)
+        {
+                return;
+        }
+        
+        if let editedImg = info["UIImagePickerControllerEditedImage"]  as? UIImage{
+            profileImage.image = editedImg
+        }
+        else if let originalImg = info["UIImagePickerControllerOriginalImage"] as? UIImage{
+            profileImage.image = originalImg
+        }
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        print("Image Pick Cancelled")
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
     @IBAction func segmentChangeAction(_ sender: UISegmentedControl) {
     
         let index = sender.selectedSegmentIndex
@@ -55,6 +90,9 @@ class LoginController: UIViewController {
             
         }
         else{
+            
+            profileImage.image = UIImage(named: "logo")
+            
             loginView.isHidden = false
             loginView.isUserInteractionEnabled = true
   
@@ -103,6 +141,26 @@ class LoginController: UIViewController {
         
     }
     
+    
+    func addUserFirebase(_ userData:[String:Any], uid: String){
+        let dbLink = Database.database().reference(fromURL: "https://bingo-chatbase.firebaseio.com/")
+        
+        let user = dbLink.child("users").child(uid)
+        
+        
+        user.updateChildValues(userData, withCompletionBlock: { (error, dbRef) in
+            if error != nil {
+                print("Data Adding Error: ", error ?? "")
+                return
+            }
+            
+            print("Successful Addition User Info")
+            
+            self.dismiss(animated: true, completion: nil)
+        })
+    }
+    
+    
     func registerAction() {
         
         let email = registerEmailTF.text
@@ -126,22 +184,40 @@ class LoginController: UIViewController {
                 return
             }
             
-            let dbLink = Database.database().reference(fromURL: "https://bingo-chatbase.firebaseio.com/")
+            let uploadData = UIImagePNGRepresentation(self.profileImage.image!)! as NSData
+            let defaultImg = UIImagePNGRepresentation(UIImage(named: "logo")!)! as NSData
             
-            let user = dbLink.child("users").child(uid!)
-            
-            let userData = ["name" : name, "email" : email]
-            
-            user.updateChildValues(userData, withCompletionBlock: { (error, dbRef) in
-                if error != nil {
-                    print("Data Adding Error: ", error ?? "")
-                    return
-                }
+            if uploadData.isEqual(defaultImg) {
                 
-                print("Successful Addition User Info")
+                let userData = ["name" : name, "email" : email , "profileImageUrl" : nil]
                 
-                self.dismiss(animated: true, completion: nil)
-            })
+                self.addUserFirebase(userData, uid: uid!)
+                return
+
+            }
+            
+            let customUuid = NSUUID().uuidString
+            
+            let storage = Storage.storage().reference().child("profile_images").child("\(customUuid).png")
+            
+            
+                storage.putData(uploadData as Data, metadata: nil, completion: { (metadata, error) in
+                    if error != nil {
+                        print("error: ",error ?? "")
+                        return
+                    }
+                    
+                    if let profileImgURL = metadata?.downloadURL()?.absoluteString {
+                      
+                        
+                        let userData = ["name" : name, "email" : email , "profileImageUrl" : profileImgURL]
+                        
+                        self.addUserFirebase(userData, uid: uid!)
+                    }
+                })
+            
+            
+            
             
         }
         
