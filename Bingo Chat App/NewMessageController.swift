@@ -60,12 +60,21 @@ class NewMessageController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NewMessageCell
         
-        cell.textLabel?.text = usersCollection[indexPath.row].name
-        cell.detailTextLabel?.text = usersCollection[indexPath.row].email
+        cell.userName.text = usersCollection[indexPath.row].name
+        cell.userEmail.text = usersCollection[indexPath.row].email
+        
+        cell.profileImage.loadImageUsingURLString(usersCollection[indexPath.row].profileImageUrl)
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
  
 }

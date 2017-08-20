@@ -6,7 +6,7 @@
 //  Copyright © 2017 14K. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 class Users: NSObject {
     var name : String?

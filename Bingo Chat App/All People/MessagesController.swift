@@ -48,13 +48,14 @@ class MessagesController: UITableViewController {
     }
     
     @IBAction func logoutAction(_ sender: UIBarButtonItem) {
-        //print("I am first")
         
         do{
             try Auth.auth().signOut()
         }
         catch let logoutErr {
             print("Logout Error: ", logoutErr)
+            
+            AlertMsg.alertAction("Logout Error", logoutErr.localizedDescription, self)
         }
         presentLoginScreen(nil)
     }

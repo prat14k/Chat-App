@@ -26,6 +26,13 @@
 	<string>I am the BOSS</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>I am the BOSS</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

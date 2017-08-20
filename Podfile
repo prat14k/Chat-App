@@ -11,4 +11,6 @@ target 'Bingo Chat App' do
   pod ‘Firebase/Auth’
   pod ‘Firebase/Storage’
 
+  pod 'Alamofire', '~> 4.4'
+
 end

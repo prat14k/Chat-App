@@ -15,6 +15,10 @@
 		AB36D1161F43221200B3E2CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB36D1141F43221200B3E2CD /* LaunchScreen.storyboard */; };
 		AB36D11E1F43239600B3E2CD /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D11D1F43239600B3E2CD /* MessagesController.swift */; };
 		AB36D1211F43251500B3E2CD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D1201F43251500B3E2CD /* LoginController.swift */; };
+		ABBDBDF21F4962F500A4517C /* AlertMsg.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBDBDF11F4962F500A4517C /* AlertMsg.swift */; };
+		ABBDBDF51F4970C800A4517C /* NewMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBDBDF41F4970C800A4517C /* NewMessageCell.swift */; };
+		ABBDBDF91F497D6800A4517C /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBDBDF81F497D6800A4517C /* ImageCache.swift */; };
+		ABBDBDFB1F49FE0800A4517C /* DummyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBDBDFA1F49FE0800A4517C /* DummyVC.swift */; };
 		ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42421F487E84000F1E9D /* NewMessageController.swift */; };
 		ABDB42461F488740000F1E9D /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42451F488740000F1E9D /* Users.swift */; };
 /* End PBXBuildFile section */
@@ -31,6 +35,10 @@
 		AB36D1171F43221200B3E2CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB36D11D1F43239600B3E2CD /* MessagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesController.swift; path = "All People/MessagesController.swift"; sourceTree = "<group>"; };
 		AB36D1201F43251500B3E2CD /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = Controllers/LoginController.swift; sourceTree = "<group>"; };
+		ABBDBDF11F4962F500A4517C /* AlertMsg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertMsg.swift; sourceTree = "<group>"; };
+		ABBDBDF41F4970C800A4517C /* NewMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageCell.swift; sourceTree = "<group>"; };
+		ABBDBDF81F497D6800A4517C /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		ABBDBDFA1F49FE0800A4517C /* DummyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyVC.swift; sourceTree = "<group>"; };
 		ABDB42421F487E84000F1E9D /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		ABDB42451F488740000F1E9D /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bingo Chat App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App.debug.xcconfig"; sourceTree = "<group>"; };
@@ -89,6 +97,8 @@
 				ABDB42441F488723000F1E9D /* Model */,
 				AB36D11F1F4324DE00B3E2CD /* Controllers */,
 				AB36D10B1F43221100B3E2CD /* AppDelegate.swift */,
+				ABBDBDF81F497D6800A4517C /* ImageCache.swift */,
+				ABBDBDFA1F49FE0800A4517C /* DummyVC.swift */,
 				AB36D10F1F43221200B3E2CD /* Main.storyboard */,
 				AB36D1121F43221200B3E2CD /* Assets.xcassets */,
 				AB36D1141F43221200B3E2CD /* LaunchScreen.storyboard */,
@@ -101,11 +111,21 @@
 		AB36D11F1F4324DE00B3E2CD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				ABBDBDF31F49709700A4517C /* TableCells */,
 				AB36D1201F43251500B3E2CD /* LoginController.swift */,
 				AB36D11D1F43239600B3E2CD /* MessagesController.swift */,
 				ABDB42421F487E84000F1E9D /* NewMessageController.swift */,
+				ABBDBDF11F4962F500A4517C /* AlertMsg.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		ABBDBDF31F49709700A4517C /* TableCells */ = {
+			isa = PBXGroup;
+			children = (
+				ABBDBDF41F4970C800A4517C /* NewMessageCell.swift */,
+			);
+			name = TableCells;
 			sourceTree = "<group>";
 		};
 		ABDB42441F488723000F1E9D /* Model */ = {
@@ -211,12 +231,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -251,9 +273,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABBDBDF21F4962F500A4517C /* AlertMsg.swift in Sources */,
 				ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */,
+				ABBDBDF91F497D6800A4517C /* ImageCache.swift in Sources */,
 				AB36D10C1F43221100B3E2CD /* AppDelegate.swift in Sources */,
+				ABBDBDFB1F49FE0800A4517C /* DummyVC.swift in Sources */,
 				ABDB42461F488740000F1E9D /* Users.swift in Sources */,
+				ABBDBDF51F4970C800A4517C /* NewMessageCell.swift in Sources */,
 				AB36D1211F43251500B3E2CD /* LoginController.swift in Sources */,
 				AB36D11E1F43239600B3E2CD /* MessagesController.swift in Sources */,
 			);

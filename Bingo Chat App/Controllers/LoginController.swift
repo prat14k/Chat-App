@@ -132,6 +132,8 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
             if error != nil {
                 print("Error Signin: ",error ?? "")
+                
+                AlertMsg.alertAction("Signin Error", error!.localizedDescription, self)
                 return
             }
             
@@ -151,6 +153,8 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         user.updateChildValues(userData, withCompletionBlock: { (error, dbRef) in
             if error != nil {
                 print("Data Adding Error: ", error ?? "")
+                
+                AlertMsg.alertAction("Unable to Add User", error!.localizedDescription, self)
                 return
             }
             
@@ -176,6 +180,8 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
             if error != nil {
                 print("User Create Error: ", error ?? "")
+                
+                AlertMsg.alertAction("Unable To Create User", error!.localizedDescription, self)
                 return
             }
             
@@ -189,7 +195,7 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
             
             if uploadData.isEqual(defaultImg) {
                 
-                let userData = ["name" : name, "email" : email , "profileImageUrl" : nil]
+                let userData = ["name" : name, "email" : email , "profileImageUrl" : ""]
                 
                 self.addUserFirebase(userData, uid: uid!)
                 return
@@ -204,6 +210,8 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
                 storage.putData(uploadData as Data, metadata: nil, completion: { (metadata, error) in
                     if error != nil {
                         print("error: ",error ?? "")
+                        
+                        AlertMsg.alertAction("Unable to upload image", error!.localizedDescription, self)
                         return
                     }
                     
