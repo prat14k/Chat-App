@@ -26,6 +26,8 @@ class NewMessageController: UITableViewController {
             if let dictionary = snapshot.value as? [String:Any]{
                 
                 let user = Users()
+                user.UID = snapshot.key
+                
                 user.setValuesForKeys(dictionary)
                 self.usersCollection.append(user)
                 
@@ -77,4 +79,22 @@ class NewMessageController: UITableViewController {
         return UITableViewAutomaticDimension
     }
  
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "chatLogSegue", sender: usersCollection[indexPath.row])
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if(segue.identifier == "chatLogSegue"){
+            
+            let vc = segue.destination as! ChatLogController
+            
+            vc.user = sender as? Users
+            
+        }
+        
+    }
+    
 }

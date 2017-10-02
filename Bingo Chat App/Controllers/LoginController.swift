@@ -190,8 +190,8 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
                 return
             }
             
-            let uploadData = UIImagePNGRepresentation(self.profileImage.image!)! as NSData
-            let defaultImg = UIImagePNGRepresentation(UIImage(named: "logo")!)! as NSData
+            let uploadData = UIImageJPEGRepresentation(self.profileImage.image!, 0.4)! as NSData
+            let defaultImg = UIImageJPEGRepresentation(UIImage(named: "logo")!,0.4)! as NSData
             
             if uploadData.isEqual(defaultImg) {
                 
