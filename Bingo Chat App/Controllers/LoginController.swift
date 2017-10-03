@@ -145,7 +145,7 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
     
     
     func addUserFirebase(_ userData:[String:Any], uid: String){
-        let dbLink = Database.database().reference(fromURL: "https://bingo-chatbase.firebaseio.com/")
+        let dbLink = Database.database().reference()
         
         let user = dbLink.child("users").child(uid)
         

@@ -13,6 +13,9 @@ class MessagesController: UITableViewController {
 
     
     var messages = [Message]()
+    
+    var usersInfo = [String : Users]()
+    
     @IBOutlet weak var logoutBtn: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -148,13 +151,80 @@ class MessagesController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? NewMessageCell
         let msg = self.messages[indexPath.row]
-        cell.textLabel?.text = msg.toID
-        cell.detailTextLabel?.text = msg.msg
         
-        return cell
+        if let toID = msg.toID{
+            
+            let ref = Database.database().reference().child("users").child(toID)
+            
+            ref.observeSingleEvent(of: .value, with: { (snapShot) in
+                
+                if let dictionary = snapShot.value as? [String : Any] {
+                    
+                    let user = Users()
+                    user.UID = snapShot.key
+                    user.setValuesForKeys(dictionary)
+                    
+                    self.usersInfo[toID] = user
+                    
+                    cell?.userName?.text = dictionary["name"] as? String
+                    
+                    if let imgURL = dictionary["profileImageUrl"] as? String{
+                        
+                        cell?.profileImage.loadImageUsingURLString(imgURL)
+                        
+                    }
+                    
+                    
+                }
+                
+            }, withCancel: nil)
+            
+        }
+    
+        
+        if let seconds = msg.timestamp as? Double{
+            
+            let dateSecs = Date(timeIntervalSince1970: seconds)
+            
+            let format = DateFormatter()
+            format.dateFormat = "hh:mm:ss a"
+            cell?.dateTimestamp.text = format.string(from: dateSecs)
+            
+        }
+        
+        cell?.userEmail?.text = msg.msg
+        
+        return cell!
         
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.performSegue(withIdentifier: "chatLogSegue", sender: messages[indexPath.row])
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if(segue.identifier == "chatLogSegue"){
+            
+            let message = sender as? Message
+            
+            let vc = segue.destination as? ChatLogController
+            
+            vc?.user = usersInfo[(message?.toID)!] as? Users
+        }
+        
+    }
+    
 }

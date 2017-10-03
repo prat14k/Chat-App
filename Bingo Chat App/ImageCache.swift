@@ -50,6 +50,9 @@ extension UIImageView {
                     imgCache.setObject(imgData, forKey: url as AnyObject)
                     
                     self.image = imgData
+                    
+                    self.layer.cornerRadius = self.frame.size.height/2.0
+                    self.layer.masksToBounds = true
                 }
                 
         }
