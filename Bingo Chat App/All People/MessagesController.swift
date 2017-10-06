@@ -13,7 +13,7 @@ class MessagesController: UITableViewController {
 
     
     var messages = [Message]()
-    
+    var messagesDict = [String : Message]()
     var usersInfo = [String : Users]()
     
     @IBOutlet weak var logoutBtn: UIBarButtonItem!
@@ -54,17 +54,44 @@ class MessagesController: UITableViewController {
         
         self.messages.removeAll()
         
+        
         let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: { (snapShot) in
+        let uid = Auth.auth().currentUser?.uid
+        let msgsDBRef = ref.child("userMsgDB").child(uid!)
+        msgsDBRef.observe(.childAdded, with: { (snapShot) in
             
-            if let dict = snapShot.value as? [String:Any]{
-                 let message = Message()
-                message.setValuesForKeys(dict)
-                self.messages.append(message)
+            if (snapShot.key as! String) != nil{
                 
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+                ref.child(snapShot.key).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let msgDict = snapshot.value as? [String:Any]{
+
+                        let message = Message()
+                        message.setValuesForKeys(msgDict)
+                        //self.messages.append(message)
+
+                        if let toID = message.toID{
+                            
+                            let tempMSG = self.messagesDict[toID]
+                            
+                            if tempMSG?.timestamp?.doubleValue < message.timestamp?.doubleValue{
+                                self.messagesDict[toID] = message
+                                self.messages = Array(self.messagesDict.values)
+                                
+                                self.messages.sort(by: { (msg1, msg2) -> Bool in
+                                    return msg1.timestamp?.doubleValue > msg2.timestamp?.doubleValue
+                                })
+                                
+                                DispatchQueue.main.async {
+                                    self.tableView.reloadData()
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                }, withCancel: nil)
+                
             }
             
         }, withCancel: nil)

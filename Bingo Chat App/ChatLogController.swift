@@ -49,7 +49,16 @@ class ChatLogController: UIViewController, UICollectionViewDelegate,UICollection
                 
                 let values = ["msg" : msg , "timestamp" : timestamp , "toID" : toID ?? "" , "fromID" : fromID ?? ""] as [String : Any]
                 
-                entryChild.updateChildValues(values)
+                entryChild.updateChildValues(values, withCompletionBlock: { (error, ref) in
+                    
+                    let msgDB = messages.child("userMsgDB")
+                    
+                    let userRef = msgDB.child(fromID!)
+                    
+                    let vals = [entryChild.key : 1]
+                    userRef.updateChildValues(vals)
+                })
+                
                 
                 msgTF.text = ""
                 
