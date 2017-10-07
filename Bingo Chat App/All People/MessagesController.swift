@@ -20,7 +20,7 @@ class MessagesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+   
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -31,6 +31,7 @@ class MessagesController: UITableViewController {
     func checkIfUserLoggedIn(){
         
         if Auth.auth().currentUser?.uid == nil {
+            
             self.perform(#selector(presentLoginScreen), with: nil, afterDelay: 0)
         }
         else{
@@ -52,15 +53,17 @@ class MessagesController: UITableViewController {
     
     func observeMessages(){
         
-        self.messages.removeAll()
-        
+        messages.removeAll()
+        messagesDict.removeAll()
+        usersInfo.removeAll()
+        tableView.reloadData()
         
         let ref = Database.database().reference().child("messages")
         let uid = Auth.auth().currentUser?.uid
         let msgsDBRef = ref.child("userMsgDB").child(uid!)
         msgsDBRef.observe(.childAdded, with: { (snapShot) in
             
-            if (snapShot.key as! String) != nil{
+            if (snapShot.key != "" ){
                 
                 ref.child(snapShot.key).observeSingleEvent(of: .value, with: { (snapshot) in
                     
@@ -72,19 +75,29 @@ class MessagesController: UITableViewController {
 
                         if let toID = message.toID{
                             
-                            let tempMSG = self.messagesDict[toID]
-                            
-                            if tempMSG?.timestamp?.doubleValue < message.timestamp?.doubleValue{
+                            if let tempMSG = self.messagesDict[toID] {
+                                if((tempMSG.timestamp?.doubleValue)! < (message.timestamp?.doubleValue)!){
+                                    self.messagesDict[toID] = message
+                                    self.messages = Array(self.messagesDict.values)
+                                    
+                                    self.messages.sort(by: { (msg1, msg2) -> Bool in
+                                        return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
+                                    })
+                                    
+                                }
+                            }
+                            else{
                                 self.messagesDict[toID] = message
                                 self.messages = Array(self.messagesDict.values)
                                 
                                 self.messages.sort(by: { (msg1, msg2) -> Bool in
-                                    return msg1.timestamp?.doubleValue > msg2.timestamp?.doubleValue
+                                    return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
                                 })
                                 
-                                DispatchQueue.main.async {
-                                    self.tableView.reloadData()
-                                }
+                            }
+                            
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
                             }
                         }
                         
@@ -181,33 +194,47 @@ class MessagesController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? NewMessageCell
         let msg = self.messages[indexPath.row]
         
-        if let toID = msg.toID{
+        if let toID = msg.toID {
             
-            let ref = Database.database().reference().child("users").child(toID)
-            
-            ref.observeSingleEvent(of: .value, with: { (snapShot) in
+            if let fromID = msg.fromID {
                 
-                if let dictionary = snapShot.value as? [String : Any] {
+                let chatPartnerID : String!
+                
+                if toID == Auth.auth().currentUser?.uid {
+                    chatPartnerID = fromID
+                }
+                else{
+                    chatPartnerID = toID
+                }
+                
+                
+                let ref = Database.database().reference().child("users").child(chatPartnerID)
+                
+                ref.observeSingleEvent(of: .value, with: { (snapShot) in
                     
-                    let user = Users()
-                    user.UID = snapShot.key
-                    user.setValuesForKeys(dictionary)
-                    
-                    self.usersInfo[toID] = user
-                    
-                    cell?.userName?.text = dictionary["name"] as? String
-                    
-                    if let imgURL = dictionary["profileImageUrl"] as? String{
+                    if let dictionary = snapShot.value as? [String : Any] {
                         
-                        cell?.profileImage.loadImageUsingURLString(imgURL)
+                        let user = Users()
+                        user.UID = snapShot.key
+                        user.setValuesForKeys(dictionary)
+                        
+                        self.usersInfo[chatPartnerID] = user
+                        
+                        cell?.userName?.text = user.name
+                        
+                        if let imgURL = dictionary["profileImageUrl"] as? String{
+                            
+                            cell?.profileImage.image = UIImage(named: "")
+                            cell?.profileImage.loadImageUsingURLString(imgURL)
+                            
+                        }
+                        
                         
                     }
                     
-                    
-                }
+                }, withCancel: nil)
                 
-            }, withCancel: nil)
-            
+            }
         }
     
         
@@ -245,11 +272,28 @@ class MessagesController: UITableViewController {
         
         if(segue.identifier == "chatLogSegue"){
             
-            let message = sender as? Message
+            let message = sender as! Message
+            
+            var chatPartnerID = ""
+            
+            if let toID = message.toID {
+                
+                if let fromID = message.fromID {
+                    
+                    
+                    if toID == Auth.auth().currentUser?.uid {
+                        chatPartnerID = fromID
+                    }
+                    else{
+                        chatPartnerID = toID
+                    }
+                    
+                }
+            }
             
             let vc = segue.destination as? ChatLogController
             
-            vc?.user = usersInfo[(message?.toID)!] as? Users
+            vc?.user = usersInfo[chatPartnerID]
         }
         
     }

@@ -35,7 +35,7 @@
                                             <outlet property="delegate" destination="lYR-EM-wn2" id="uCO-x9-FeA"/>
                                         </connections>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nww-r7-yBo">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nww-r7-yBo">
                                         <rect key="frame" x="331" y="10" width="36" height="30"/>
                                         <state key="normal" title="Send"/>
                                         <connections>
@@ -64,13 +64,33 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Rii-C8-1Xc">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="messageCell" id="Rii-C8-1Xc" customClass="BubbleCell" customModule="Bingo_Chat_App" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="w" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="JAc-1P-J2E">
+                                                    <rect key="frame" x="-157" y="10" width="200" height="30"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="200" id="E63-Sr-Ile"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                            </subviews>
                                         </view>
+                                        <color key="backgroundColor" red="1" green="1" blue="0.1892361111111111" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="JAc-1P-J2E" firstAttribute="top" secondItem="Rii-C8-1Xc" secondAttribute="top" constant="10" id="9mE-89-blK"/>
+                                            <constraint firstAttribute="bottom" secondItem="JAc-1P-J2E" secondAttribute="bottom" constant="10" id="buh-UB-mtc"/>
+                                            <constraint firstAttribute="trailing" secondItem="JAc-1P-J2E" secondAttribute="trailing" constant="7" id="zLi-qr-cLB"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="msgTextView" destination="JAc-1P-J2E" id="ikx-RF-klK"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -91,6 +111,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="collectionView" destination="5ER-2c-HuR" id="kiM-l4-gKH"/>
                         <outlet property="msgTF" destination="edU-9O-hat" id="QSs-m8-tHn"/>
                         <outlet property="sendBtn" destination="nww-r7-yBo" id="Hf5-fw-J1O"/>
                     </connections>
