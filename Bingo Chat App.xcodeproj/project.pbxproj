@@ -16,6 +16,7 @@
 		AB36D11E1F43239600B3E2CD /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D11D1F43239600B3E2CD /* MessagesController.swift */; };
 		AB36D1211F43251500B3E2CD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB36D1201F43251500B3E2CD /* LoginController.swift */; };
 		AB4D03081F8945C200052233 /* BubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4D03071F8945C200052233 /* BubbleCell.swift */; };
+		AB500FBB1F8A3288002D1DC3 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB500FBA1F8A3288002D1DC3 /* PaddedLabel.swift */; };
 		ABA2307D1F82A482006EB2AA /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA2307C1F82A482006EB2AA /* ChatLogController.swift */; };
 		ABA2307F1F82C14F006EB2AA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA2307E1F82C14F006EB2AA /* Message.swift */; };
 		ABBDBDF21F4962F500A4517C /* AlertMsg.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBDBDF11F4962F500A4517C /* AlertMsg.swift */; };
@@ -39,6 +40,7 @@
 		AB36D11D1F43239600B3E2CD /* MessagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessagesController.swift; path = "All People/MessagesController.swift"; sourceTree = "<group>"; };
 		AB36D1201F43251500B3E2CD /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = Controllers/LoginController.swift; sourceTree = "<group>"; };
 		AB4D03071F8945C200052233 /* BubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleCell.swift; sourceTree = "<group>"; };
+		AB500FBA1F8A3288002D1DC3 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
 		ABA2307C1F82A482006EB2AA /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		ABA2307E1F82C14F006EB2AA /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		ABBDBDF11F4962F500A4517C /* AlertMsg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertMsg.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				AB36D1141F43221200B3E2CD /* LaunchScreen.storyboard */,
 				AB36D1171F43221200B3E2CD /* Info.plist */,
 				AB238F391F43402B00AF86FA /* GoogleService-Info.plist */,
+				AB500FBA1F8A3288002D1DC3 /* PaddedLabel.swift */,
 			);
 			path = "Bingo Chat App";
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB500FBB1F8A3288002D1DC3 /* PaddedLabel.swift in Sources */,
 				ABA2307D1F82A482006EB2AA /* ChatLogController.swift in Sources */,
 				ABBDBDF21F4962F500A4517C /* AlertMsg.swift in Sources */,
 				ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */,

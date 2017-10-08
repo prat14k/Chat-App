@@ -56,7 +56,6 @@ class MessagesController: UITableViewController {
         messages.removeAll()
         messagesDict.removeAll()
         usersInfo.removeAll()
-        tableView.reloadData()
         
         let ref = Database.database().reference().child("messages")
         let uid = Auth.auth().currentUser?.uid
@@ -71,13 +70,12 @@ class MessagesController: UITableViewController {
 
                         let message = Message()
                         message.setValuesForKeys(msgDict)
-                        //self.messages.append(message)
-
-                        if let toID = message.toID{
+                        
+                        if let chatPartnerUID = message.chatPartnerID(){
                             
-                            if let tempMSG = self.messagesDict[toID] {
+                            if let tempMSG = self.messagesDict[chatPartnerUID] {
                                 if((tempMSG.timestamp?.doubleValue)! < (message.timestamp?.doubleValue)!){
-                                    self.messagesDict[toID] = message
+                                    self.messagesDict[chatPartnerUID] = message
                                     self.messages = Array(self.messagesDict.values)
                                     
                                     self.messages.sort(by: { (msg1, msg2) -> Bool in
@@ -87,7 +85,7 @@ class MessagesController: UITableViewController {
                                 }
                             }
                             else{
-                                self.messagesDict[toID] = message
+                                self.messagesDict[chatPartnerUID] = message
                                 self.messages = Array(self.messagesDict.values)
                                 
                                 self.messages.sort(by: { (msg1, msg2) -> Bool in
@@ -173,7 +171,13 @@ class MessagesController: UITableViewController {
             
             AlertMsg.alertAction("Logout Error", logoutErr.localizedDescription, self)
         }
-        presentLoginScreen(nil)
+        
+        
+        messages.removeAll()
+        messagesDict.removeAll()
+        usersInfo.removeAll()
+        self.tableView.reloadData()
+        self.perform(#selector(presentLoginScreen), with: nil, afterDelay: 0.1)
     }
     
     
@@ -194,47 +198,33 @@ class MessagesController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? NewMessageCell
         let msg = self.messages[indexPath.row]
         
-        if let toID = msg.toID {
+        if let chatPartnerID = msg.chatPartnerID() {
             
-            if let fromID = msg.fromID {
+            let ref = Database.database().reference().child("users").child(chatPartnerID)
+            
+            ref.observeSingleEvent(of: .value, with: { (snapShot) in
                 
-                let chatPartnerID : String!
-                
-                if toID == Auth.auth().currentUser?.uid {
-                    chatPartnerID = fromID
-                }
-                else{
-                    chatPartnerID = toID
-                }
-                
-                
-                let ref = Database.database().reference().child("users").child(chatPartnerID)
-                
-                ref.observeSingleEvent(of: .value, with: { (snapShot) in
+                if let dictionary = snapShot.value as? [String : Any] {
                     
-                    if let dictionary = snapShot.value as? [String : Any] {
+                    let user = Users()
+                    user.UID = snapShot.key
+                    user.setValuesForKeys(dictionary)
+                    
+                    self.usersInfo[chatPartnerID] = user
+                    
+                    cell?.userName?.text = user.name
+                    
+                    if let imgURL = dictionary["profileImageUrl"] as? String{
                         
-                        let user = Users()
-                        user.UID = snapShot.key
-                        user.setValuesForKeys(dictionary)
-                        
-                        self.usersInfo[chatPartnerID] = user
-                        
-                        cell?.userName?.text = user.name
-                        
-                        if let imgURL = dictionary["profileImageUrl"] as? String{
-                            
-                            cell?.profileImage.image = UIImage(named: "")
-                            cell?.profileImage.loadImageUsingURLString(imgURL)
-                            
-                        }
-                        
+                        cell?.profileImage.image = UIImage(named: "")
+                        cell?.profileImage.loadImageUsingURLString(imgURL)
                         
                     }
                     
-                }, withCancel: nil)
+                    
+                }
                 
-            }
+            }, withCancel: nil)
         }
     
         
@@ -274,26 +264,13 @@ class MessagesController: UITableViewController {
             
             let message = sender as! Message
             
-            var chatPartnerID = ""
-            
-            if let toID = message.toID {
-                
-                if let fromID = message.fromID {
-                    
-                    
-                    if toID == Auth.auth().currentUser?.uid {
-                        chatPartnerID = fromID
-                    }
-                    else{
-                        chatPartnerID = toID
-                    }
-                    
-                }
-            }
-            
             let vc = segue.destination as? ChatLogController
             
-            vc?.user = usersInfo[chatPartnerID]
+            if let chatPartnerUID = message.chatPartnerID(){
+                
+                vc?.user = usersInfo[chatPartnerUID]
+            }
+            
         }
         
     }

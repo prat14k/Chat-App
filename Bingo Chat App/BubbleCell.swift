@@ -8,7 +8,8 @@
 
 import UIKit
 
-class BubbleCell: UICollectionViewCell {
+class BubbleCell: UITableViewCell {
     
-    @IBOutlet weak var msgTextView: UITextView!
+    @IBOutlet weak var msgLabel: UILabel!
+    @IBOutlet weak var toIDImage: UIImageView!
 }

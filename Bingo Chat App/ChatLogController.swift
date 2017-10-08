@@ -9,11 +9,11 @@
 import UIKit
 import Firebase
 
-class ChatLogController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource , UITextFieldDelegate, UICollectionViewDelegateFlowLayout {
+class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSource , UITextFieldDelegate {
     
     var messages = [Message]()
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var tableView: UITableView!
     var user : Users?{
         
         didSet{
@@ -31,14 +31,50 @@ class ChatLogController: UIViewController, UICollectionViewDelegate,UICollection
     }
     @IBOutlet weak var sendBtn: UIButton!
     @IBOutlet weak var msgTF: UITextField!
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "messageCell", for: indexPath) as? BubbleCell
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let msg = messages[indexPath.row]
+        var nxtMsg : Message! = nil
+
+        if((indexPath.row+1) < self.messages.count){
+            nxtMsg = messages[indexPath.row+1]
+        }
         
-        cell?.msgTextView.text = msg.msg
+        var cellID : String! = ""
         
-        return cell!
+        if(msg.fromID == Auth.auth().currentUser?.uid){
+            cellID = "sentMessageCell"
+        }
+        else{
+            if(nxtMsg != nil){
+                if(nxtMsg.toID == Auth.auth().currentUser?.uid){
+                    cellID = "recievedMessageCellN"
+                }
+                else{
+                    cellID = "recievedMessageCell"
+                }
+            }
+            else{
+                cellID = "recievedMessageCellN"
+                if((indexPath.row+1) == self.messages.count){
+                    cellID = "recievedMessageCell"
+                }
+            }
+        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! BubbleCell
+        
+        cell.msgLabel.text = msg.msg
+        
+        if(cellID == "recievedMessageCell"){
+            
+            if let imgUrl = user?.profileImageUrl{
+                cell.toIDImage.loadImageUsingURLString(imgUrl)
+            }
+        }
+        
+        return cell
     }
     
     func observeMessages(){
@@ -63,7 +99,7 @@ class ChatLogController: UIViewController, UICollectionViewDelegate,UICollection
                         })
                         
                         DispatchQueue.main.async {
-                            self.collectionView.reloadData()
+                            self.tableView.reloadData()
                         }
                         
                     }
@@ -119,25 +155,24 @@ class ChatLogController: UIViewController, UICollectionViewDelegate,UICollection
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize(width: self.view.frame.width, height: 80)
-        
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendMsgAction(sendBtn)
         return true
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
     
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 750
+    }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.messages.count
     }
-    
 }

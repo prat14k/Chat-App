@@ -13,4 +13,5 @@ class Users: NSObject {
     var email : String!
     var profileImageUrl : String?
     var UID : String!
+    
 }
