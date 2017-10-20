@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import MobileCoreServices
+import AVFoundation
 
 class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSource , UITextFieldDelegate , UIImagePickerControllerDelegate , UINavigationControllerDelegate {
     
@@ -143,6 +145,11 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         }
         else if let imgUrl = msg.msgImgURL{
             cell.msgImageView.loadImageUsingURLString(imgUrl)
+            
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomAction))
+            gesture.numberOfTapsRequired = 1
+            cell.msgImageView.addGestureRecognizer(gesture)
+            
         }
         
 //        if(cellID == "recievedMessageCell"){
@@ -217,6 +224,8 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         imagePickerContr.delegate = self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate
         imagePickerContr.sourceType = UIImagePickerControllerSourceType.photoLibrary
         
+        imagePickerContr.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+        
         imagePickerContr.allowsEditing = true
         self.present(imagePickerContr, animated: true, completion: nil)
         
@@ -229,19 +238,37 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        var selectedImageFromPicker : UIImage?
-        
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            selectedImageFromPicker = editedImage
+        if let videoURL = info[UIImagePickerControllerMediaURL] as? URL {
+            let videoName = NSUUID().uuidString
+            
+            Storage.storage().reference().child("video_msgs").child(videoName).putFile(from: videoURL, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print("Error uploading video", error ?? "")
+                    return
+                }
+                if let vidURL = metadata?.downloadURL()?.absoluteString {
+                    
+                    
+                    
+                }
+                
+            })
         }
-        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage{
-            selectedImageFromPicker = originalImage
+        else{
+            var selectedImageFromPicker : UIImage?
+            
+            if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+                selectedImageFromPicker = editedImage
+            }
+            else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage{
+                selectedImageFromPicker = originalImage
+            }
+            
+            if let selectedImage = selectedImageFromPicker {
+                uploadImageMsg(selectedImage)
+            }
         }
-        
-        if let selectedImage = selectedImageFromPicker {
-            uploadImageMsg(selectedImage)
-        }
-        
         picker.dismiss(animated: true, completion: nil)
     }
     
@@ -461,5 +488,68 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         if self.isMovingFromParentViewController {
             self.navigationController?.popToRootViewController(animated: true)
         }
+    }
+    
+    var normalImgRect: CGRect?
+    var zoomingImgView : UIImageView!
+    var zoomBGView: UIView!
+    
+    @IBAction func zoomAction(_ sender: UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        normalImgRect = imgView.superview?.convert(imgView.frame, to: nil)
+        
+        zoomingImgView = UIImageView(frame: normalImgRect!)
+        zoomingImgView.image = imgView.image
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
+        gesture.numberOfTapsRequired = 1
+        zoomingImgView.isUserInteractionEnabled = true
+        zoomingImgView.addGestureRecognizer(gesture)
+        
+        if let keyWindow = UIApplication.shared.keyWindow {
+        
+            self.inputAccessoryView?.alpha = 0
+            
+            zoomBGView = UIView(frame: keyWindow.frame)
+            zoomBGView.backgroundColor = UIColor(white: 0, alpha: 0.85)
+            zoomBGView.alpha = 0
+            
+            let gesture1 = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
+            gesture1.numberOfTapsRequired = 1
+            zoomBGView.isUserInteractionEnabled = true
+            zoomBGView.addGestureRecognizer(gesture1)
+            
+            keyWindow.addSubview(zoomBGView)
+            keyWindow.addSubview(zoomingImgView)
+            
+            let newHght = (((normalImgRect?.size.height)! / (normalImgRect?.size.width)!) * keyWindow.frame.size.width)
+            
+            let zoomedImgRect = CGRect(x: 0, y: 0, width: keyWindow.frame.size.width, height: newHght)
+            
+            UIView.animate(withDuration: 0.34, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                self.zoomingImgView.frame = zoomedImgRect
+                self.zoomingImgView.center = keyWindow.center
+                
+                self.zoomBGView.alpha = 1
+            }, completion: nil)
+        }
+        
+    }
+    
+    @IBAction func zoomOutAction(_ sender: UITapGestureRecognizer) {
+       
+        UIView.animate(withDuration: 0.34, delay: 0, options: .curveEaseOut, animations: {
+            self.zoomingImgView.frame = self.normalImgRect!
+            
+            self.zoomBGView.alpha = 0
+            
+        }) { (finished) in
+            
+            self.inputAccessoryView?.alpha = 1
+            self.zoomingImgView.removeFromSuperview()
+            self.zoomBGView.removeFromSuperview()
+        }
+        
     }
 }
