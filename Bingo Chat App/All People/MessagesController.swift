@@ -13,12 +13,14 @@ class MessagesController: UITableViewController {
 
     
     var messages = [Message]()
-    var messagesDict = [String : Message]()
     var usersInfo = [String : Users]()
+    var msgIndexInfo = [String : NSNumber]()
     
     @IBOutlet weak var logoutBtn: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        newLogin = true
     }
    
     
@@ -28,10 +30,11 @@ class MessagesController: UITableViewController {
         checkIfUserLoggedIn()
     }
     
+    var newLogin = false
+    
     func checkIfUserLoggedIn(){
         
         if Auth.auth().currentUser?.uid == nil {
-            
             self.perform(#selector(presentLoginScreen), with: nil, afterDelay: 0)
         }
         else{
@@ -39,11 +42,29 @@ class MessagesController: UITableViewController {
             Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if let dictionary = snapshot.value as? [String:Any] {
-                    self.setupNavBar(dictionary)
                     
-                    self.observeMessages()
+                    let name = dictionary["name"] as! String
+                    let imgUrl = dictionary["profileImageUrl"] as! String
+                    
+                    if(name == ""){
+                        self.navigationItem.title = "Your Chat People"
+                    }
+                    else{
+                        if(imgUrl == ""){
+                            self.navigationItem.title = name
+                        }
+                        else{
+                            self.setupNavBar(dictionary)
+                        }
+                    }
+                    
+                    
+                    if(self.newLogin)
+                    {
+                        self.observeMessages()
+                        self.newLogin = false
+                    }
                 }
-                
             })
         }
         
@@ -54,51 +75,84 @@ class MessagesController: UITableViewController {
     func observeMessages(){
         
         messages.removeAll()
-        messagesDict.removeAll()
         usersInfo.removeAll()
+        msgIndexInfo.removeAll()
+        self.tableView.reloadData()
         
         let ref = Database.database().reference().child("messages")
         let uid = Auth.auth().currentUser?.uid
-        let msgsDBRef = ref.child("userMsgDB").child(uid!)
+        
+        if(uid == nil || uid == ""){
+            return
+        }
+        let msgsDBRef = Database.database().reference().child("usrMsgHistory").child(uid!)
         msgsDBRef.observe(.childAdded, with: { (snapShot) in
             
-            if (snapShot.key != "" ){
+            if let msgUID = snapShot.value as? String{
                 
-                ref.child(snapShot.key).observeSingleEvent(of: .value, with: { (snapshot) in
+                ref.child(msgUID).observeSingleEvent(of: .value, with: { (snapshot) in
                     
                     if let msgDict = snapshot.value as? [String:Any]{
 
                         let message = Message()
                         message.setValuesForKeys(msgDict)
                         
-                        if let chatPartnerUID = message.chatPartnerID(){
-                            
-                            if let tempMSG = self.messagesDict[chatPartnerUID] {
-                                if((tempMSG.timestamp?.doubleValue)! < (message.timestamp?.doubleValue)!){
-                                    self.messagesDict[chatPartnerUID] = message
-                                    self.messages = Array(self.messagesDict.values)
-                                    
-                                    self.messages.sort(by: { (msg1, msg2) -> Bool in
-                                        return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
-                                    })
-                                    
-                                }
-                            }
-                            else{
-                                self.messagesDict[chatPartnerUID] = message
-                                self.messages = Array(self.messagesDict.values)
-                                
-                                self.messages.sort(by: { (msg1, msg2) -> Bool in
-                                    return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
-                                })
-                                
-                            }
-                            
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                            }
+                        self.messages.append(message)
+                        
+                        self.messages.sort(by: { (msg1, msg2) -> Bool in
+                            return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
+                        })
+                        
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
                         }
                         
+                        var ind = 0
+                        for elem in self.messages {
+                            if let chatPartnerUID = elem.chatPartnerID() {
+                                self.msgIndexInfo[chatPartnerUID] = NSNumber(value: ind)
+                            }
+                            ind+=1
+                        }
+                        
+                    }
+                    
+                }, withCancel: nil)
+                
+            }
+            
+        }, withCancel: nil)
+        
+        msgsDBRef.observe(.childChanged, with: { (snapShot) in
+            
+            if let msgUID = snapShot.value as? String{
+                
+                ref.child(msgUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let msgDict = snapshot.value as? [String:Any]{
+                        
+                        let message = Message()
+                        message.setValuesForKeys(msgDict)
+                        
+                        let msgInd = self.msgIndexInfo[snapShot.key]?.intValue
+                        
+                        self.messages[msgInd!] = message
+                        
+                        self.messages.sort(by: { (msg1, msg2) -> Bool in
+                            return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
+                        })
+                        
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
+                        
+                        var ind = 0
+                        for elem in self.messages {
+                            if let chatPartnerUID = elem.chatPartnerID() {
+                                self.msgIndexInfo[chatPartnerUID] = NSNumber(value: ind)
+                            }
+                            ind+=1
+                        }
                     }
                     
                 }, withCancel: nil)
@@ -174,9 +228,9 @@ class MessagesController: UITableViewController {
         
         
         messages.removeAll()
-        messagesDict.removeAll()
         usersInfo.removeAll()
         self.tableView.reloadData()
+        newLogin = true
         self.perform(#selector(presentLoginScreen), with: nil, afterDelay: 0.1)
     }
     
@@ -200,31 +254,47 @@ class MessagesController: UITableViewController {
         
         if let chatPartnerID = msg.chatPartnerID() {
             
-            let ref = Database.database().reference().child("users").child(chatPartnerID)
+            //self.msgIndexInfo[chatPartnerID] = NSNumber(value: indexPath.row)
             
-            ref.observeSingleEvent(of: .value, with: { (snapShot) in
+            if let user = self.usersInfo[chatPartnerID] {
                 
-                if let dictionary = snapShot.value as? [String : Any] {
+                cell?.userName?.text = user.name
+                
+                if let imgURL = user.profileImageUrl {
                     
-                    let user = Users()
-                    user.UID = snapShot.key
-                    user.setValuesForKeys(dictionary)
-                    
-                    self.usersInfo[chatPartnerID] = user
-                    
-                    cell?.userName?.text = user.name
-                    
-                    if let imgURL = dictionary["profileImageUrl"] as? String{
-                        
-                        cell?.profileImage.image = UIImage(named: "")
-                        cell?.profileImage.loadImageUsingURLString(imgURL)
-                        
-                    }
-                    
+                    cell?.profileImage.image = UIImage(named: "")
+                    cell?.profileImage.loadImageUsingURLString(imgURL)
                     
                 }
                 
-            }, withCancel: nil)
+            }
+            else{
+                let ref = Database.database().reference().child("users").child(chatPartnerID)
+                
+                ref.observeSingleEvent(of: .value, with: { (snapShot) in
+                    
+                    if let dictionary = snapShot.value as? [String : Any] {
+                        
+                        let user = Users()
+                        user.UID = snapShot.key
+                        user.setValuesForKeys(dictionary)
+                        
+                        self.usersInfo[chatPartnerID] = user
+                        
+                        cell?.userName?.text = user.name
+                        
+                        if let imgURL = dictionary["profileImageUrl"] as? String{
+                            
+                            cell?.profileImage.image = UIImage(named: "")
+                            cell?.profileImage.loadImageUsingURLString(imgURL)
+                            
+                        }
+                        
+                        
+                    }
+                    
+                }, withCancel: nil)
+            }
         }
     
         
@@ -238,8 +308,12 @@ class MessagesController: UITableViewController {
             
         }
         
-        cell?.userEmail?.text = msg.msg
-        
+        if let msgText = msg.msg {
+            cell?.userEmail?.text = msgText
+        }
+        else{
+            cell?.userEmail.text = "{Image}"
+        }
         return cell!
         
     }

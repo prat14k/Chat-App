@@ -32,16 +32,10 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="lYR-EM-wn2" id="uCO-x9-FeA"/>
-                                        </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nww-r7-yBo">
                                         <rect key="frame" x="331" y="10" width="36" height="30"/>
                                         <state key="normal" title="Send"/>
-                                        <connections>
-                                            <action selector="sendMsgAction:" destination="lYR-EM-wn2" eventType="touchUpInside" id="kU0-2O-OdD"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
@@ -55,7 +49,7 @@
                                     <constraint firstItem="edU-9O-hat" firstAttribute="centerY" secondItem="Jck-cH-qm5" secondAttribute="centerY" id="y9c-BT-h5s"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gbf-w3-2n3">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gbf-w3-2n3">
                                 <rect key="frame" x="0.0" y="64" width="375" height="553"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -97,8 +91,62 @@
                                             <outlet property="msgLabel" destination="LTD-9a-d5Z" id="SQy-vj-Cxh"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recievedMessageCellN" id="Xik-KQ-q1z" customClass="BubbleCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="sentImageMessageCell" id="okA-KC-zWb" customClass="BubbleCell" customModule="Bingo_Chat_App" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="okA-KC-zWb" id="kA9-xT-z67">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="191" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Nx-Mw-NMH">
+                                                    <rect key="frame" x="119.5" y="5" width="243.5" height="34"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="5Nx-Mw-NMH" secondAttribute="trailing" constant="12" id="9eC-ys-ryK"/>
+                                                <constraint firstItem="5Nx-Mw-NMH" firstAttribute="top" secondItem="kA9-xT-z67" secondAttribute="top" constant="5" id="aGa-Nr-39k"/>
+                                                <constraint firstAttribute="bottom" secondItem="5Nx-Mw-NMH" secondAttribute="bottom" constant="5" id="tgp-iX-7nb"/>
+                                                <constraint firstItem="5Nx-Mw-NMH" firstAttribute="width" secondItem="kA9-xT-z67" secondAttribute="width" multiplier="0.65" id="yL9-1J-EVV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="msgImageView" destination="5Nx-Mw-NMH" id="Vvm-af-Dr1"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recievedImageMessageCell" id="nUY-CB-Olb" customClass="BubbleCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="116" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nUY-CB-Olb" id="xwS-2s-6CY">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="191" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RQO-BA-TNe">
+                                                    <rect key="frame" x="12" y="5" width="244" height="34"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="RQO-BA-TNe" firstAttribute="top" secondItem="xwS-2s-6CY" secondAttribute="top" constant="5" id="QWF-mB-VUg"/>
+                                                <constraint firstAttribute="bottom" secondItem="RQO-BA-TNe" secondAttribute="bottom" constant="5" id="jAl-vz-Vy1"/>
+                                                <constraint firstItem="RQO-BA-TNe" firstAttribute="width" secondItem="xwS-2s-6CY" secondAttribute="width" multiplier="0.65" id="lN9-Wz-Jfk"/>
+                                                <constraint firstItem="RQO-BA-TNe" firstAttribute="leading" secondItem="xwS-2s-6CY" secondAttribute="leading" constant="12" id="z3g-od-U6d"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="msgImageView" destination="RQO-BA-TNe" id="io7-DG-Zy6"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recievedMessageCell" id="Xik-KQ-q1z" customClass="BubbleCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="160" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xik-KQ-q1z" id="gfU-Co-Agm">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -106,7 +154,7 @@
                                             <subviews>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c2f-z9-JK5">
                                                     <rect key="frame" x="12" y="5" width="20" height="34"/>
-                                                    <color key="backgroundColor" red="0.81176470588235294" green="0.81176470588235294" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="calibratedRGB"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="12"/>
@@ -135,60 +183,6 @@
                                             <outlet property="msgLabel" destination="8Ou-6l-bWT" id="CVw-cH-ccQ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="recievedMessageCell" rowHeight="75" id="oyT-8r-fFF" customClass="BubbleCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="116" width="375" height="75"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oyT-8r-fFF" id="ibJ-f4-xgH">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SYI-en-v0c">
-                                                    <rect key="frame" x="60" y="5" width="20" height="65"/>
-                                                    <color key="backgroundColor" red="0.81176470588235294" green="0.81176470588235294" blue="0.81176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="12"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </view>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kI3-Nh-cyx">
-                                                    <rect key="frame" x="70" y="15" width="0.0" height="45"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="STD-nv-EAj">
-                                                    <rect key="frame" x="12" y="30" width="40" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="WQf-2P-LM1"/>
-                                                        <constraint firstAttribute="width" secondItem="STD-nv-EAj" secondAttribute="height" multiplier="1:1" id="llE-Xs-h9V"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="20"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="STD-nv-EAj" firstAttribute="bottom" secondItem="SYI-en-v0c" secondAttribute="bottom" id="5LM-aG-0zc"/>
-                                                <constraint firstItem="SYI-en-v0c" firstAttribute="leading" secondItem="kI3-Nh-cyx" secondAttribute="leading" constant="-10" id="LAQ-PU-4gJ"/>
-                                                <constraint firstItem="SYI-en-v0c" firstAttribute="top" secondItem="kI3-Nh-cyx" secondAttribute="top" constant="-10" id="Oop-aC-oAz"/>
-                                                <constraint firstItem="STD-nv-EAj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ibJ-f4-xgH" secondAttribute="top" constant="5" id="U4m-yW-gxu"/>
-                                                <constraint firstItem="STD-nv-EAj" firstAttribute="leading" secondItem="ibJ-f4-xgH" secondAttribute="leading" constant="12" id="UF8-jX-3d6"/>
-                                                <constraint firstItem="kI3-Nh-cyx" firstAttribute="leading" secondItem="STD-nv-EAj" secondAttribute="trailing" constant="18" id="ZHP-O2-foA"/>
-                                                <constraint firstItem="kI3-Nh-cyx" firstAttribute="top" secondItem="ibJ-f4-xgH" secondAttribute="top" priority="999" constant="15" id="b1Q-lN-bdR"/>
-                                                <constraint firstItem="SYI-en-v0c" firstAttribute="trailing" secondItem="kI3-Nh-cyx" secondAttribute="trailing" constant="10" id="bKa-ia-5Wd"/>
-                                                <constraint firstItem="SYI-en-v0c" firstAttribute="bottom" secondItem="kI3-Nh-cyx" secondAttribute="bottom" constant="10" id="hUD-hc-Fhk"/>
-                                                <constraint firstItem="kI3-Nh-cyx" firstAttribute="width" relation="lessThanOrEqual" secondItem="ibJ-f4-xgH" secondAttribute="width" multiplier="0.7" id="nAh-pn-yrd"/>
-                                                <constraint firstAttribute="bottom" secondItem="kI3-Nh-cyx" secondAttribute="bottom" constant="15" id="twn-BY-5EF"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="msgLabel" destination="kI3-Nh-cyx" id="fc6-Kw-CAP"/>
-                                            <outlet property="toIDImage" destination="STD-nv-EAj" id="7vI-Ve-ei4"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="lYR-EM-wn2" id="kNM-gL-wFs"/>
@@ -201,16 +195,22 @@
                             <constraint firstItem="Gbf-w3-2n3" firstAttribute="top" secondItem="LOR-9c-ngJ" secondAttribute="bottom" id="31f-nL-OcS"/>
                             <constraint firstItem="Gbf-w3-2n3" firstAttribute="width" secondItem="z48-fn-uqE" secondAttribute="width" id="4wT-N2-7EK"/>
                             <constraint firstItem="Jck-cH-qm5" firstAttribute="width" secondItem="z48-fn-uqE" secondAttribute="width" id="83E-sh-eiQ"/>
+                            <constraint firstItem="DDm-4A-7QD" firstAttribute="top" secondItem="Gbf-w3-2n3" secondAttribute="bottom" constant="50" id="DUx-gx-hXa"/>
                             <constraint firstItem="DDm-4A-7QD" firstAttribute="top" secondItem="Jck-cH-qm5" secondAttribute="bottom" id="XFj-ig-zh5"/>
                             <constraint firstItem="Jck-cH-qm5" firstAttribute="top" secondItem="Gbf-w3-2n3" secondAttribute="bottom" id="bvr-Jd-kT7"/>
                             <constraint firstItem="Gbf-w3-2n3" firstAttribute="centerX" secondItem="z48-fn-uqE" secondAttribute="centerX" id="lrS-qV-YUF"/>
                             <constraint firstItem="Jck-cH-qm5" firstAttribute="centerX" secondItem="z48-fn-uqE" secondAttribute="centerX" id="vOJ-e6-v76"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Jck-cH-qm5"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
-                        <outlet property="msgTF" destination="edU-9O-hat" id="QSs-m8-tHn"/>
-                        <outlet property="sendBtn" destination="nww-r7-yBo" id="Hf5-fw-J1O"/>
+                        <outlet property="containerView" destination="Jck-cH-qm5" id="Jnw-2d-lk5"/>
                         <outlet property="tableView" destination="Gbf-w3-2n3" id="Lp0-8C-zOE"/>
+                        <outlet property="tableViewBottomContraint" destination="DUx-gx-hXa" id="raf-qw-1Jr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jK7-sE-UuH" userLabel="First Responder" sceneMemberID="firstResponder"/>

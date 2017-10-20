@@ -18,13 +18,13 @@ extension UIImageView {
         
         self.image = nil
         
-        if url == nil || url.isEmpty{
+        if url == nil || url.isEmpty || url == ""{
+            self.image = UIImage(named: "placeholderPic")
             return
         }
         
         if let img = imgCache.object(forKey: url as AnyObject) as? UIImage{
             self.image = img
-            print(2)
             return
         }
         
@@ -36,11 +36,9 @@ extension UIImageView {
             .responseData { (response) -> Void in
                 guard response.result.isSuccess else {
                     print("Error while fetching remote rooms: \(String(describing: response.result.error))")
-                    
+                    self.image = UIImage(named: "placeholderPic")
                     return
                 }
-                
-                print(1)
                 
                 //print(response.result.value)
                 
@@ -51,7 +49,9 @@ extension UIImageView {
                     
                     self.image = imgData
                     
-                    self.layer.cornerRadius = self.frame.size.height/2.0
+                    if self.tag != 191 {
+                        self.layer.cornerRadius = self.frame.size.height/2.0
+                    }
                     self.layer.masksToBounds = true
                 }
                 

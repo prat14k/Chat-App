@@ -12,4 +12,7 @@ class BubbleCell: UITableViewCell {
     
     @IBOutlet weak var msgLabel: UILabel!
     @IBOutlet weak var toIDImage: UIImageView!
+    
+    @IBOutlet weak var msgImageView: UIImageView!
+    @IBOutlet weak var msgImageHieghtContraint: NSLayoutConstraint!
 }

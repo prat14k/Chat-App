@@ -13,9 +13,12 @@ class Message: NSObject {
     var toID : String!
     var fromID : String!
     var msg : String!
-    var timestamp : NSNumber?
+    var timestamp : NSNumber!
     
+    var msgImgURL : String!
     
+    var imgHght : NSNumber!
+    var imgWidth : NSNumber!
     
     func chatPartnerID() -> String!{
         
