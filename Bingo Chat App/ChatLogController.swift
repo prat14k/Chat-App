@@ -134,23 +134,28 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         if msg.msg != nil {
             cellID = pref + cellID
         }
+        else if msg.msgVideoURL != nil {
+            cellID = pref + "Video" + cellID
+        }
         else if msg.msgImgURL != nil {
             cellID = pref + "Image" + cellID
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! BubbleCell
         
-        if let msgText = msg.msg {
-            cell.msgLabel.text = msgText
-        }
-        else if let imgUrl = msg.msgImgURL{
-            cell.msgImageView.loadImageUsingURLString(imgUrl)
-            
+        cell.setupCell(msg)
+        
+        if msg.msgVideoURL == nil ,(msg.msgImgURL) != nil{
+        
             let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomAction))
             gesture.numberOfTapsRequired = 1
             cell.msgImageView.addGestureRecognizer(gesture)
             
         }
+        
+        
+        
+        
         
 //        if(cellID == "recievedMessageCell"){
 //
@@ -234,14 +239,33 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         print("Image Pick Cancelled")
+        
+        picker.dismiss(animated: true, completion: nil)
     }
+    
+    private func getVidThumbNail(_ url: URL) -> (UIImage?){
+        
+        let asset = AVAsset(url: url)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        
+        do{
+            let thumbNailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+        
+            return UIImage(cgImage: thumbNailCGImage)
+        }
+        catch let err {
+            print(err)
+        }
+        return nil
+    }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if let videoURL = info[UIImagePickerControllerMediaURL] as? URL {
             let videoName = NSUUID().uuidString
             
-            Storage.storage().reference().child("video_msgs").child(videoName).putFile(from: videoURL, metadata: nil, completion: { (metadata, error) in
+            let uploadTask = Storage.storage().reference().child("video_msgs").child(videoName).putFile(from: videoURL, metadata: nil, completion: { (metadata, error) in
                 
                 if error != nil {
                     print("Error uploading video", error ?? "")
@@ -249,11 +273,33 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
                 }
                 if let vidURL = metadata?.downloadURL()?.absoluteString {
                     
-                    
+                    if let thumbImage = self.getVidThumbNail(videoURL) {
+                        
+                        
+                        self.uploadImageMsg(thumbImage, mainRef: Storage.storage().reference().child("video_msgs").child("thumbnails"), completionHandler: { (imageURL) in
+                            
+                            if imageURL == "" {
+                                return
+                            }
+                            let dict : [String:Any] = ["imgHght" : (thumbImage.size.height as NSNumber) , "imgWidth" : (thumbImage.size.width as NSNumber) , "msgImgURL" : imageURL , "msgVideoURL" : vidURL]
+                            self.sendMsg2Firebase(dict)
+                            
+                        })
+                        
+                    }
                     
                 }
                 
             })
+            
+            uploadTask.observe(StorageTaskStatus.progress, handler: { (snapshot) in
+                print(snapshot.progress?.completedUnitCount ?? "")
+            })
+            
+            uploadTask.observe(StorageTaskStatus.success, handler: { (snapShot) in
+                print("Success")
+            })
+            
         }
         else{
             var selectedImageFromPicker : UIImage?
@@ -266,7 +312,15 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
             }
             
             if let selectedImage = selectedImageFromPicker {
-                uploadImageMsg(selectedImage)
+                
+                uploadImageMsg(selectedImage, mainRef: Storage.storage().reference().child("message_images"), completionHandler: { (imageURL) in
+                    if imageURL == "" {
+                        return
+                    }
+                    let dict : [String:Any] = ["imgHght" : (selectedImage.size.height as NSNumber) , "imgWidth" : (selectedImage.size.width as NSNumber) , "msgImgURL" : imageURL]
+                    self.sendMsg2Firebase(dict)
+                })
+
             }
         }
         picker.dismiss(animated: true, completion: nil)
@@ -314,20 +368,9 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         
     }
     
-    
-    private func sendImageMsg(_ imageURL : String! , imgHght : CGFloat , imgWidth : CGFloat){
-        
-        if imageURL == "" {
-            return
-        }
-        let dict : [String:Any] = ["imgHght" : (imgHght as NSNumber) , "imgWidth" : (imgWidth as NSNumber) , "msgImgURL" : imageURL]
-        self.sendMsg2Firebase(dict)
-
-    }
-    
-    func uploadImageMsg(_ selectedImage : UIImage!){
+    func uploadImageMsg(_ selectedImage : UIImage! , mainRef : StorageReference! , completionHandler : @escaping (String) -> ()){
         let imageString = NSUUID().uuidString
-        let ref = Storage.storage().reference().child("message_images").child(imageString)
+        let ref = mainRef.child(imageString) //Storage.storage().reference().child("message_images")
         
         if let imageData = UIImageJPEGRepresentation(selectedImage, 0.2) {
             ref.putData(imageData, metadata: nil, completion: { (metaData, error) in
@@ -337,7 +380,10 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
                 }
                 
                 if let imageURL = metaData?.downloadURL()?.absoluteString {
-                    self.sendImageMsg(imageURL, imgHght: selectedImage.size.height, imgWidth: selectedImage.size.width)
+                    
+                    completionHandler(imageURL)
+                    
+                   // self.sendImageMsg(imageURL, imgHght: selectedImage.size.height, imgWidth: selectedImage.size.width)
                 }
             })
         }
@@ -359,11 +405,11 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         self.sendBtn.addTarget(self, action: #selector(sendMsgAction), for: UIControlEvents.touchUpInside)
         self.sendBtn.setTitleColor(UIColor.black, for: UIControlState.normal)
         
-        self.imageSendBtn = UIButton(type: UIButtonType.custom)
-        self.imageSendBtn.setTitle("+", for: UIControlState.normal)
+        self.imageSendBtn = UIButton(type: UIButtonType.contactAdd)
+        self.imageSendBtn.setTitle("", for: UIControlState.normal)
         self.imageSendBtn.addTarget(self, action: #selector(sendImageAction), for: UIControlEvents.touchUpInside)
-        self.imageSendBtn.setTitleColor(UIColor.gray, for: UIControlState.normal)
-        self.imageSendBtn.titleLabel?.font = UIFont.systemFont(ofSize: 28)
+        self.imageSendBtn.tintColor = UIColor.gray
+       // self.imageSendBtn.titleLabel?.font = UIFont.systemFont(ofSize: 28)
         
         containerView.addSubview(self.sendBtn)
         containerView.addSubview(self.msgTF)
@@ -552,4 +598,21 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         }
         
     }
+    
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if let customCell = cell as? BubbleCell{
+            
+            if customCell.player != nil {
+                customCell.player?.pause()
+                customCell.playerLayer?.removeFromSuperlayer()
+                customCell.player = nil
+            }
+            
+        }
+        
+    }
+    
+    
 }

@@ -48,10 +48,12 @@ class MessagesController: UITableViewController {
                     
                     if(name == ""){
                         self.navigationItem.title = "Your Chat People"
+                        self.navigationItem.titleView = nil
                     }
                     else{
                         if(imgUrl == ""){
                             self.navigationItem.title = name
+                            self.navigationItem.titleView = nil
                         }
                         else{
                             self.setupNavBar(dictionary)
@@ -311,12 +313,65 @@ class MessagesController: UITableViewController {
         if let msgText = msg.msg {
             cell?.userEmail?.text = msgText
         }
-        else{
+        else if msg.msgVideoURL != nil{
+            cell?.userEmail.text = "{Video}"
+        }
+        else if msg.msgImgURL != nil{
             cell?.userEmail.text = "{Image}"
         }
         return cell!
         
     }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if(editingStyle == UITableViewCellEditingStyle.delete){
+            
+            if let uid = Auth.auth().currentUser?.uid{
+            
+                if let message = self.messages[indexPath.row] as? Message {
+                    
+                    if let chatPartnerUID = message.chatPartnerID() {
+                        
+                        let baseRef = Database.database().reference()
+                        baseRef.child("usrMsgHistory").child(uid).child(chatPartnerUID).removeValue()
+                        baseRef.child("userMsgDB").child(uid).child(chatPartnerUID).removeValue()
+                        
+                        self.messages.remove(at: indexPath.row)
+                        self.msgIndexInfo.removeValue(forKey: chatPartnerUID)
+                        self.usersInfo.removeValue(forKey: chatPartnerUID)
+                        
+                        var ind = 0
+                        for elem in self.messages {
+                            if let chatPartnerUID = elem.chatPartnerID() {
+                                self.msgIndexInfo[chatPartnerUID] = NSNumber(value: ind)
+                            }
+                            ind+=1
+                        }
+                        
+                        self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.top)
+                        
+                    }
+                    
+                }
+                
+            }
+            else {
+                checkIfUserLoggedIn()
+                return
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension

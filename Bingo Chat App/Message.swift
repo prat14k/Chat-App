@@ -17,6 +17,8 @@ class Message: NSObject {
     
     var msgImgURL : String!
     
+    var msgVideoURL : String!
+    
     var imgHght : NSNumber!
     var imgWidth : NSNumber!
     

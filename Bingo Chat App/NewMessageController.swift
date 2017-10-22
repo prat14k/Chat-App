@@ -29,8 +29,18 @@ class NewMessageController: UITableViewController {
                 user.UID = snapshot.key
                 
                 user.setValuesForKeys(dictionary)
+                
                 self.usersCollection.append(user)
                 
+                if let uid = Auth.auth().currentUser?.uid {
+                    
+                    if uid == user.UID {
+                        
+                        self.usersCollection.removeLast()
+                        
+                    }
+                    
+                }
                 DispatchQueue.main.async {
                     
                     self.tableView.reloadData()

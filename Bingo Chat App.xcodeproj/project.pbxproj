@@ -47,6 +47,7 @@
 		ABBDBDF41F4970C800A4517C /* NewMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageCell.swift; sourceTree = "<group>"; };
 		ABBDBDF81F497D6800A4517C /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		ABBDBDFA1F49FE0800A4517C /* DummyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyVC.swift; sourceTree = "<group>"; };
+		ABD01D4A1F9CEBB5000ED3EC /* Bingo Chat App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Bingo Chat App.entitlements"; sourceTree = "<group>"; };
 		ABDB42421F487E84000F1E9D /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		ABDB42451F488740000F1E9D /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bingo Chat App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,6 +103,7 @@
 		AB36D10A1F43221100B3E2CD /* Bingo Chat App */ = {
 			isa = PBXGroup;
 			children = (
+				ABD01D4A1F9CEBB5000ED3EC /* Bingo Chat App.entitlements */,
 				ABDB42441F488723000F1E9D /* Model */,
 				AB36D11F1F4324DE00B3E2CD /* Controllers */,
 				AB36D10B1F43221100B3E2CD /* AppDelegate.swift */,
@@ -185,6 +187,11 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 5C332PLDTQ;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -423,6 +430,7 @@
 			baseConfigurationReference = B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Bingo Chat App/Bingo Chat App.entitlements";
 				DEVELOPMENT_TEAM = 5C332PLDTQ;
 				INFOPLIST_FILE = "Bingo Chat App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
@@ -438,6 +446,7 @@
 			baseConfigurationReference = 6E10967627999E4E7E686EE3 /* Pods-Bingo Chat App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Bingo Chat App/Bingo Chat App.entitlements";
 				DEVELOPMENT_TEAM = 5C332PLDTQ;
 				INFOPLIST_FILE = "Bingo Chat App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
