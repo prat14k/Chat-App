@@ -8,52 +8,63 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class LoginController: UIViewController , UIImagePickerControllerDelegate , UINavigationControllerDelegate {
 
-    @IBOutlet weak var registerNameTF: UITextField!
-    @IBOutlet weak var registerEmailTF: UITextField!
-    @IBOutlet weak var registerPasswordTF: UITextField!
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var profilePicUpdateLabel: UILabel!
+    
+    let imagePickerController : UIImagePickerController = {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.allowsEditing = true
+        imagePickerController.sourceType = .photoLibrary
+        
+        return imagePickerController
+    }()
+    
+    let gradientLayer : CAGradientLayer = {
+       
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [ UIColor(red: 89.0/255.0, green: 23.0/255.0, blue: 11.0/255.0, alpha: 1.0).cgColor , UIColor(red: 142.0/255.0, green: 14.0/255.0, blue: 0, alpha: 1.0).cgColor , UIColor(red: 89.0/255.0, green: 23.0/255.0, blue: 11.0/255.0, alpha: 1.0).cgColor ]
+        return gradientLayer
+    }()
+    
+    @IBOutlet weak var nameTFContainer: UIView!
+    @IBOutlet weak var emailTFContainer: UIView!
+    @IBOutlet weak var passwordTFContainer: UIView!
+    
+    @IBOutlet weak var nameTF: UITextField!
+    @IBOutlet weak var emailTF: UITextField!
+    @IBOutlet weak var passwordTF: UITextField!
     
     @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var loginEmailTF: UITextField!
-    @IBOutlet weak var loginPasswordTF: UITextField!
     
     @IBOutlet weak var segmentOutlet: UISegmentedControl!
     
-    @IBOutlet weak var loginView: UIView!
-    @IBOutlet weak var registerView: UIView!
-   
     @IBOutlet weak var submitBtn: UIButton!
     
-    @IBOutlet weak var buttonYPosContraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewBottomContraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        registerView.layer.cornerRadius = 5.0;
-        loginView.layer.cornerRadius = 5.0;
-        submitBtn.layer.cornerRadius = 5.0;
-        submitBtn.tag = 1
-        loginView.isHidden = true
-        loginView.isUserInteractionEnabled = false
-        
+        gradientLayer.frame = view.bounds
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        imagePickerController.delegate = self
     }
 
     @IBAction func imagePickAction(_ sender: UITapGestureRecognizer) {
-        let pickerView = UIImagePickerController()
-        pickerView.allowsEditing = true
-        pickerView.delegate = self
-        pickerView.sourceType = .photoLibrary
-        present(pickerView, animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if(segmentOutlet.selectedSegmentIndex == 0)
         {
-                return;
+            return;
         }
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if let editedImg = info["UIImagePickerControllerEditedImage"]  as? UIImage{
             profileImage.image = editedImg
@@ -81,26 +92,25 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         submitBtn.setTitle(sender.titleForSegment(at: index), for: .normal)
         
         if(index == 1){
-            loginView.isHidden = true
-            loginView.isUserInteractionEnabled = false
-           
-            registerView.isHidden = false
-            registerView.isUserInteractionEnabled = true
-            buttonYPosContraint.priority = 999
+            profileImage.isHidden = false
+            nameTFContainer.isHidden = false
+            profilePicUpdateLabel.isHidden = false
+            profileImage.image = UIImage(named: Constants.uploadImagePlaceholder)
+
+            emailTF.text = ""
+            passwordTF.text = ""
             
+            submitBtn.setTitle("SIGNUP", for: .normal)
         }
         else{
+            profileImage.isHidden = true
+            nameTFContainer.isHidden = true
+            profilePicUpdateLabel.isHidden = true
             
-            profileImage.image = UIImage(named: "logo")
-            
-            loginView.isHidden = false
-            loginView.isUserInteractionEnabled = true
-  
-            registerView.isHidden = true
-            registerView.isUserInteractionEnabled = false
-            
-            buttonYPosContraint.priority = 997
-            
+            nameTF.text = ""
+            emailTF.text = ""
+            passwordTF.text = ""
+            submitBtn.setTitle("LOGIN", for: .normal)
         }
         
     }
@@ -119,8 +129,8 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
     }
     
     func loginAction(){
-        let email = loginEmailTF.text
-        let password = loginPasswordTF.text
+        let email = emailTF.text
+        let password = passwordTF.text
       
         if email == nil || password == nil {
             
@@ -129,7 +139,9 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
             
         }
         
+        SVProgressHUD.show(withStatus: "Logging in")
         Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
+            SVProgressHUD.dismiss()
             if error != nil {
                 print("Error Signin: ",error ?? "")
                 
@@ -151,10 +163,12 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         
         
         user.updateChildValues(userData, withCompletionBlock: { (error, dbRef) in
+            SVProgressHUD.dismiss()
             if error != nil {
                 print("Data Adding Error: ", error ?? "")
                 
                 AlertMsg.alertAction("Unable to Add User", error!.localizedDescription, self)
+                
                 return
             }
             
@@ -167,9 +181,9 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
     
     func registerAction() {
         
-        let email = registerEmailTF.text
-        let password = registerPasswordTF.text
-        let name = ((registerNameTF.text == nil) ? "" : registerNameTF.text)
+        let email = emailTF.text
+        let password = passwordTF.text
+        let name = ((nameTF.text == nil) ? "" : nameTF.text)
         if email == nil || password == nil {
             
             print("Empty Fields")
@@ -177,11 +191,13 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         
         }
         
+        SVProgressHUD.show(withStatus: "Registering a new user")
         Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
             if error != nil {
                 print("User Create Error: ", error ?? "")
                 
                 AlertMsg.alertAction("Unable To Create User", error!.localizedDescription, self)
+                SVProgressHUD.dismiss()
                 return
             }
             
@@ -191,7 +207,7 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
             }
             
             let uploadData = UIImageJPEGRepresentation(self.profileImage.image!, 0.4)! as NSData
-            let defaultImg = UIImageJPEGRepresentation(UIImage(named: "logo")!,0.4)! as NSData
+            let defaultImg = UIImageJPEGRepresentation(UIImage(named: Constants.uploadImagePlaceholder)!,0.4)! as NSData
             
             if uploadData.isEqual(defaultImg) {
                 
@@ -212,6 +228,7 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
                         print("error: ",error ?? "")
                         
                         AlertMsg.alertAction("Unable to upload image", error!.localizedDescription, self)
+                        SVProgressHUD.dismiss()
                         return
                     }
                     
