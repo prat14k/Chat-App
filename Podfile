@@ -7,10 +7,13 @@ target 'Bingo Chat App' do
 
   # Pods for Bingo Chat App
 
+  pod ‘Firebase/Core’
   pod ‘Firebase/Database’
   pod ‘Firebase/Auth’
   pod ‘Firebase/Storage’
 
   pod 'Alamofire', '~> 4.4'
+  pod 'SVProgressHUD'
+
 
 end
