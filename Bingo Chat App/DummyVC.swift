@@ -17,7 +17,9 @@ class DummyVC: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        loadImageUsingURLString("https://media.creativemornings.com/uploads/user/avatar/19379/small_the_new_avatar_512.png")
+//        loadImageUsingURLString("https://media.creativemornings.com/uploads/user/avatar/19379/small_the_new_avatar_512.png")
+        
+        imgView.backgroundColor = UIColor.colorFromHexString("#00f235")
         
     }
     
@@ -49,21 +51,5 @@ class DummyVC: UIViewController {
         
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

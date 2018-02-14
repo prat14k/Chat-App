@@ -64,6 +64,31 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         present(imagePickerController, animated: true, completion: nil)
     }
     
+    @objc func keyboardWillAppear(_ notification : Notification) {
+        scrollViewBottomContraint.constant = 300
+        self.scrollView.layoutIfNeeded()
+    }
+    
+    @objc func keyboardWillDisappear(_ notification : Notification) {
+        scrollViewBottomContraint.constant = 60
+        self.scrollView.layoutIfNeeded()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if let editedImg = info["UIImagePickerControllerEditedImage"]  as? UIImage{
@@ -92,7 +117,7 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         submitBtn.setTitle(sender.titleForSegment(at: index), for: .normal)
         
         if(index == 1){
-            profileImage.isHidden = false
+//            profileImage.isHidden = false
             nameTFContainer.isHidden = false
             profilePicUpdateLabel.isHidden = false
             profileImage.image = UIImage(named: Constants.uploadImagePlaceholder)
@@ -103,7 +128,8 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
             submitBtn.setTitle("SIGNUP", for: .normal)
         }
         else{
-            profileImage.isHidden = true
+//            profileImage.isHidden = true
+            profileImage.image = UIImage(named: Constants.appLogo)
             nameTFContainer.isHidden = true
             profilePicUpdateLabel.isHidden = true
             
@@ -129,16 +155,14 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
     }
     
     func loginAction(){
+        
+        if !checkCredentialsLiability() {
+            return
+        }
+        
         let email = emailTF.text
         let password = passwordTF.text
       
-        if email == nil || password == nil {
-            
-            print("Empty Fields")
-            return
-            
-        }
-        
         SVProgressHUD.show(withStatus: "Logging in")
         Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
             SVProgressHUD.dismiss()
@@ -178,18 +202,56 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
         })
     }
     
+    func checkCredentialsLiability() -> Bool{
+        self.view.endEditing(true)
+        
+        if let email = emailTF.text {
+            if !isEmailValid(email: email) {
+                AlertMsg.alertAction("The entered email is not valid", "The entered email doesn't follow the email id character rules", self)
+                return false
+            }
+        }
+        else{
+            return false
+        }
+        
+        if let password = passwordTF.text {
+            if password.count < 6 {
+                AlertMsg.alertAction("The entered password is too small", "The minimum length for the password is 6 letters", self)
+                return false
+            }
+        }
+        else{
+            return false
+        }
+        
+        return true
+    }
+    
+    func isEmailValid(email : String) -> Bool {
+        
+        if email.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            return false
+        }
+        
+        //        let stricterFilter = true
+        let stricterFilterString = "^[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$"
+        //        let laxString = "^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$"
+        //        let emailRegex = stricterFilter ? stricterFilterString : laxString
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", stricterFilterString)
+        
+        return emailTest.evaluate(with:email)
+    }
     
     func registerAction() {
+        
+        if !checkCredentialsLiability() {
+            return
+        }
         
         let email = emailTF.text
         let password = passwordTF.text
         let name = ((nameTF.text == nil) ? "" : nameTF.text)
-        if email == nil || password == nil {
-            
-            print("Empty Fields")
-            return
-        
-        }
         
         SVProgressHUD.show(withStatus: "Registering a new user")
         Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
@@ -250,3 +312,59 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
     }
     
 }
+
+
+extension LoginController : UITextFieldDelegate {
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        let originPt = view.convert(textField.frame.origin, from: textField.superview)
+        let lastPoint = textField.frame.size.height + originPt.y
+        
+        if lastPoint > (view.frame.size.height - 250) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.scrollView.contentOffset = CGPoint(x: 0, y: lastPoint - (self.view.frame.size.height - 250) + 30)
+            })
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        
+        if textField == nameTF {
+            emailTF.becomeFirstResponder()
+        }
+        else if textField == emailTF {
+            passwordTF.becomeFirstResponder()
+        }
+        else if textField == passwordTF {
+            if submitBtn.tag == 0 {
+                loginAction()
+            }
+            else{
+                registerAction()
+            }
+        }
+        
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        return true
+    }
+    
+}
+

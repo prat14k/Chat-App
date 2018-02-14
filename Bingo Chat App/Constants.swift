@@ -11,6 +11,7 @@ import UIKit
 class Constants: NSObject {
 
     static let uploadImagePlaceholder = "imageUpload"
+    static let appLogo = "logo"
     static let userImagePlaceholder = "placeholderPic"
     
 }

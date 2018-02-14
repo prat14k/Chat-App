@@ -24,6 +24,8 @@
 		ABBDBDFB1F49FE0800A4517C /* DummyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBDBDFA1F49FE0800A4517C /* DummyVC.swift */; };
 		ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42421F487E84000F1E9D /* NewMessageController.swift */; };
 		ABDB42461F488740000F1E9D /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42451F488740000F1E9D /* Users.swift */; };
+		BB9B672C2032F6D500EA0306 /* HexStr2IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9B672B2032F6D500EA0306 /* HexStr2IntExt.swift */; };
+		BB9B672E2032FA6B00EA0306 /* UIColorHexExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9B672D2032FA6B00EA0306 /* UIColorHexExt.swift */; };
 		BBED80FC203067B000732D7F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBED80FB203067B000732D7F /* Constants.swift */; };
 		BBFE384D2021ABF70088F701 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBFE384C2021ABF60088F701 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -51,6 +53,8 @@
 		ABDB42421F487E84000F1E9D /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		ABDB42451F488740000F1E9D /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bingo Chat App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App.debug.xcconfig"; sourceTree = "<group>"; };
+		BB9B672B2032F6D500EA0306 /* HexStr2IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexStr2IntExt.swift; sourceTree = "<group>"; };
+		BB9B672D2032FA6B00EA0306 /* UIColorHexExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexExt.swift; sourceTree = "<group>"; };
 		BBED80FB203067B000732D7F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BBFE384C2021ABF60088F701 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,7 +124,6 @@
 			isa = PBXGroup;
 			children = (
 				ABBDBDF31F49709700A4517C /* Cells */,
-				ABBDBDFA1F49FE0800A4517C /* DummyVC.swift */,
 				AB36D1201F43251500B3E2CD /* LoginController.swift */,
 				AB36D11D1F43239600B3E2CD /* MessagesController.swift */,
 				ABA2307C1F82A482006EB2AA /* ChatLogController.swift */,
@@ -147,6 +150,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		BB9B672F2033045600EA0306 /* Hex2StrColor */ = {
+			isa = PBXGroup;
+			children = (
+				BB9B672B2032F6D500EA0306 /* HexStr2IntExt.swift */,
+				BB9B672D2032FA6B00EA0306 /* UIColorHexExt.swift */,
+			);
+			name = Hex2StrColor;
+			sourceTree = "<group>";
+		};
 		BBED80F820303E1B00732D7F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,6 +166,7 @@
 				AB500FBA1F8A3288002D1DC3 /* PaddedLabel.swift */,
 				ABBDBDF11F4962F500A4517C /* AlertMsg.swift */,
 				BBED80FB203067B000732D7F /* Constants.swift */,
+				BB9B672F2033045600EA0306 /* Hex2StrColor */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -161,6 +174,7 @@
 		BBED80F920303E6600732D7F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ABBDBDFA1F49FE0800A4517C /* DummyVC.swift */,
 				AB36D10B1F43221100B3E2CD /* AppDelegate.swift */,
 				BBFE384C2021ABF60088F701 /* GoogleService-Info.plist */,
 				ABD01D4A1F9CEBB5000ED3EC /* Bingo Chat App.entitlements */,
@@ -324,6 +338,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB500FBB1F8A3288002D1DC3 /* PaddedLabel.swift in Sources */,
+				BB9B672E2032FA6B00EA0306 /* UIColorHexExt.swift in Sources */,
 				ABA2307D1F82A482006EB2AA /* ChatLogController.swift in Sources */,
 				ABBDBDF21F4962F500A4517C /* AlertMsg.swift in Sources */,
 				ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */,
@@ -332,6 +347,7 @@
 				ABBDBDFB1F49FE0800A4517C /* DummyVC.swift in Sources */,
 				ABA2307F1F82C14F006EB2AA /* Message.swift in Sources */,
 				AB4D03081F8945C200052233 /* BubbleCell.swift in Sources */,
+				BB9B672C2032F6D500EA0306 /* HexStr2IntExt.swift in Sources */,
 				ABDB42461F488740000F1E9D /* Users.swift in Sources */,
 				ABBDBDF51F4970C800A4517C /* NewMessageCell.swift in Sources */,
 				BBED80FC203067B000732D7F /* Constants.swift in Sources */,
