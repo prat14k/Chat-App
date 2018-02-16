@@ -11,9 +11,10 @@ import Firebase
 import MobileCoreServices
 import AVFoundation
 
-class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSource , UITextFieldDelegate , UIImagePickerControllerDelegate , UINavigationControllerDelegate {
+class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSource , UITextFieldDelegate , UIImagePickerControllerDelegate , UINavigationControllerDelegate , UIScrollViewDelegate {
     
     var messages = [Message]()
+    var messagesKeys = [String]()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var containerView: UIView!
@@ -36,11 +37,89 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
                 }
             }
             
-            observeMessages()
+//            observeMessages()
+            fetchAllMessages()
         }
         
     }
 
+    func getMessagesForKeys(keyCollection : [String]) {
+        let ref = Database.database().reference().child("messages")
+        
+        let count = keyCollection.count
+        
+        if count == 0 {
+            self.observeNewMessages()
+            return
+        }
+        
+        for key in keyCollection {
+            ref.child(key).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let msgDict = snapshot.value as? [String:Any]{
+                    
+                    self.messagesKeys.append(key)
+                    
+                    let message = Message()
+                    message.setValuesForKeys(msgDict)
+                    
+                    self.messages.append(message)
+
+                }
+                
+                if count == self.messages.count {
+                    self.messages.sort(by: { (msg1, msg2) -> Bool in
+                        return (msg1.timestamp?.doubleValue)! < (msg2.timestamp?.doubleValue)!
+                    })
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.tableView.layoutIfNeeded()
+                        if count > 0 {
+                            self.tableView.scrollToRow(at: IndexPath(row: (count - 1), section: 0), at: UITableViewScrollPosition.bottom, animated: true)
+                        }
+                    }
+                }
+                
+            })
+        }
+    
+    }
+    
+    func fetchAllMessages(){
+        
+        if let myselfUser = Auth.auth().currentUser {
+            let uid = myselfUser.uid
+            
+            let msgsDBRef = Database.database().reference().child("userMsgDB").child(uid).child((user?.UID!)!)
+            
+            msgsDBRef.observeSingleEvent(of: .value, with: { (snapShot) in
+                
+                if snapShot.exists() {
+                    if let msgKeysCollection = snapShot.value as? [String : Any] {
+                        
+                        var msgsKeys = [String]()
+                        
+                        for (key,_) in msgKeysCollection {
+                            if key != "" {
+                                msgsKeys.append(key)
+                            }
+                        }
+                        
+                        self.getMessagesForKeys(keyCollection : msgsKeys)
+                    }
+                }
+                else{
+                    self.observeNewMessages()
+                }
+                
+            })
+        
+        }
+        
+        
+    }
+    
+    
     func setupNavBar(_ userDict : Users!){
         
         let titleView = UIView()
@@ -94,56 +173,82 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         
         let msg = messages[indexPath.row]
         var cellID : String! = "MessageCell"
-//        var nxtMsg : Message! = nil
-//
-//        if((indexPath.row+1) < self.messages.count){
-//            nxtMsg = messages[indexPath.row+1]
-//        }
-//
-//
-//
-//        if(msg.fromID == Auth.auth().currentUser?.uid){
-//            cellID = "sentMessageCell"
-//        }
-//        else{
-//            if(nxtMsg != nil){
-//                if(nxtMsg.toID == Auth.auth().currentUser?.uid){
-//                    cellID = "recievedMessageCellN"
-//                }
-//                else{
-//                    cellID = "recievedMessageCell"
-//                }
-//            }
-//            else{
-//                cellID = "recievedMessageCellN"
-//                if((indexPath.row+1) == self.messages.count){
-//                    cellID = "recievedMessageCell"
-//                }
-//            }
-//        }
         
+        var myUID = ""
+        if let currentUser = Auth.auth().currentUser {
+            myUID = currentUser.uid
+        }
         
-        var pref : String!
-        if(msg.fromID == Auth.auth().currentUser?.uid){
+        var corners : UIRectCorner
+        var pref : String
+    
+        var toIDImageURL : String? = nil
+        
+        var maskingImageName : String
+        
+        if(msg.fromID == myUID){
             pref = "sent"
+            
+            maskingImageName = pref
+            
+            corners = [ .bottomLeft , .topLeft ]
+            
+            
+            if (indexPath.row <= 0) || (messages[indexPath.row - 1].fromID != myUID) {
+                corners.insert(.topRight)
+                maskingImageName = "\(maskingImageName)2"
+                pref = "\(pref)Up"
+            }
+            
+            if (indexPath.row >= (messages.count - 1)) || (messages[indexPath.row + 1].fromID != myUID) {
+                corners.insert(.bottomRight)
+                maskingImageName = "\(maskingImageName)1"
+                pref = "\(pref)Down"
+            }
+            
         }
         else{
             pref = "recieved"
+            
+            maskingImageName = pref
+            
+            corners = [ .topRight , .bottomRight ]
+            
+            if let otherUser = user {
+                
+                toIDImageURL = otherUser.profileImageUrl
+                
+                if (indexPath.row <= 0) || (messages[indexPath.row - 1].fromID != otherUser.UID) {
+                    corners.insert(.topLeft)
+                    maskingImageName = "\(maskingImageName)2"
+                    pref = "\(pref)Up"
+                }
+                
+                if (indexPath.row >= (messages.count - 1)) || (messages[indexPath.row + 1].fromID != otherUser.UID) {
+                    corners.insert(.bottomLeft)
+                    maskingImageName = "\(maskingImageName)1"
+                    pref = "\(pref)Down"
+                }
+                
+            }
+        
         }
         
         if msg.msg != nil {
             cellID = pref + cellID
         }
         else if msg.msgVideoURL != nil {
+            toIDImageURL = nil
             cellID = pref + "Video" + cellID
         }
         else if msg.msgImgURL != nil {
+            toIDImageURL = nil
             cellID = pref + "Image" + cellID
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! BubbleCell
         
-        cell.setupCell(msg)
+        cell.setupCell(msg, sendersImageURL: toIDImageURL, withRoundCorners: corners , maskingImageName: maskingImageName)
         
         if msg.msgVideoURL == nil ,(msg.msgImgURL) != nil{
         
@@ -153,57 +258,67 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
             
         }
         
-        
-        
-        
-        
-//        if(cellID == "recievedMessageCell"){
-//
-//            if let imgUrl = user?.profileImageUrl{
-//                cell.toIDImage.loadImageUsingURLString(imgUrl)
-//            }
-//        }
-//
-        
         return cell
     }
     
-    func observeMessages(){
+    func observeNewMessages(){
         
         let ref = Database.database().reference().child("messages")
-        let uid = Auth.auth().currentUser?.uid
-        let msgsDBRef = Database.database().reference().child("userMsgDB").child(uid!).child((user?.UID!)!)
-        msgsDBRef.observe(.childAdded, with: { (snapShot) in
+        if let currentAppUser = Auth.auth().currentUser , let user = user {
+            let msgsDBRef = Database.database().reference().child("userMsgDB").child(currentAppUser.uid).child((user.UID!))
             
-            if (snapShot.key != "" ){
+            msgsDBRef.observe(.childAdded, with: { (snapShot) in
                 
-                ref.child(snapShot.key).observeSingleEvent(of: .value, with: { (snapshot) in
+                if (snapShot.key != "" ){
                     
-                    if let msgDict = snapshot.value as? [String:Any]{
-                        
-                        let message = Message()
-                        message.setValuesForKeys(msgDict)
-                        
-                        self.messages.append(message)
-                        self.messages.sort(by: { (msg1, msg2) -> Bool in
-                            return (msg1.timestamp?.doubleValue)! < (msg2.timestamp?.doubleValue)!
-                        })
-                        
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                            self.tableView.layoutIfNeeded()
-                            if self.messages.count > 0 {
-                                self.tableView.scrollToRow(at: IndexPath(row: (self.messages.count - 1), section: 0), at: UITableViewScrollPosition.bottom, animated: true)
+                    if !self.messagesKeys.contains(snapShot.key) {
+                    
+                        ref.child(snapShot.key).observeSingleEvent(of: .value, with: { (snapshot) in
+                            
+                            if let msgDict = snapshot.value as? [String:Any]{
+                                
+                                let message = Message()
+                                message.setValuesForKeys(msgDict)
+                                
+                                self.messages.append(message)
+                                let msgsCnt = self.messages.count
+                                if msgsCnt > 1 {
+                                    let msg2 = self.messages[msgsCnt - 1]
+                                    let msg1 = self.messages[msgsCnt - 2]
+                                    
+                                    if (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)! {
+                                        self.messages.sort(by: { (msg1, msg2) -> Bool in
+                                            return (msg1.timestamp?.doubleValue)! < (msg2.timestamp?.doubleValue)!
+                                        })
+                                    }
+                                    
+                                }
+                                
+                                DispatchQueue.main.async {
+                                    self.tableView.reloadData()
+//                                    self.tableView.layoutIfNeeded()
+                                    if self.messages.count > 0 {
+                                        self.tableView.scrollToRow(at: IndexPath(row: (self.messages.count - 1), section: 0), at: UITableViewScrollPosition.bottom, animated: true)
+                                    }
+                                }
                             }
-                        }
+                            
+                        }, withCancel: nil)
+                        
                     }
                     
-                }, withCancel: nil)
+                }
                 
-            }
+            }, withCancel: nil)
             
-        }, withCancel: nil)
+        }
         
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let bubbleCell = cell as? BubbleCell {
+            bubbleCell.makeRoundCellCorners()
+        }
     }
     
     @IBAction func sendMsgAction(_ sender: UIButton) {
@@ -226,7 +341,7 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         
         let imagePickerContr = UIImagePickerController()
         
-        imagePickerContr.delegate = self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate
+        imagePickerContr.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
         imagePickerContr.sourceType = UIImagePickerControllerSourceType.photoLibrary
         
         imagePickerContr.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
@@ -468,6 +583,11 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -611,6 +731,10 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
             }
             
         }
+        
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
     }
     

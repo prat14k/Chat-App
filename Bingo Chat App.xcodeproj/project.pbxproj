@@ -27,6 +27,7 @@
 		BB9B672C2032F6D500EA0306 /* HexStr2IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9B672B2032F6D500EA0306 /* HexStr2IntExt.swift */; };
 		BB9B672E2032FA6B00EA0306 /* UIColorHexExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9B672D2032FA6B00EA0306 /* UIColorHexExt.swift */; };
 		BBED80FC203067B000732D7F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBED80FB203067B000732D7F /* Constants.swift */; };
+		BBF637372037071E00C30BCF /* RoundCorneredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF637362037071E00C30BCF /* RoundCorneredView.swift */; };
 		BBFE384D2021ABF70088F701 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBFE384C2021ABF60088F701 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		BB9B672B2032F6D500EA0306 /* HexStr2IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexStr2IntExt.swift; sourceTree = "<group>"; };
 		BB9B672D2032FA6B00EA0306 /* UIColorHexExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexExt.swift; sourceTree = "<group>"; };
 		BBED80FB203067B000732D7F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BBF637362037071E00C30BCF /* RoundCorneredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCorneredView.swift; sourceTree = "<group>"; };
 		BBFE384C2021ABF60088F701 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -167,6 +169,7 @@
 				ABBDBDF11F4962F500A4517C /* AlertMsg.swift */,
 				BBED80FB203067B000732D7F /* Constants.swift */,
 				BB9B672F2033045600EA0306 /* Hex2StrColor */,
+				BBF637362037071E00C30BCF /* RoundCorneredView.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				AB36D10C1F43221100B3E2CD /* AppDelegate.swift in Sources */,
 				ABBDBDFB1F49FE0800A4517C /* DummyVC.swift in Sources */,
 				ABA2307F1F82C14F006EB2AA /* Message.swift in Sources */,
+				BBF637372037071E00C30BCF /* RoundCorneredView.swift in Sources */,
 				AB4D03081F8945C200052233 /* BubbleCell.swift in Sources */,
 				BB9B672C2032F6D500EA0306 /* HexStr2IntExt.swift in Sources */,
 				ABDB42461F488740000F1E9D /* Users.swift in Sources */,

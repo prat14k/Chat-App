@@ -29,11 +29,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dis-a3-QOZ">
-                                <rect key="frame" x="12" y="417.5" width="296" height="42.5"/>
+                                <rect key="frame" x="12" y="428.5" width="296" height="31.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Copyright © 2017 Prateek Sharma,                                        Owner of Bingo Tech Pvt. Ltd.">
                                         <attributes>
-                                            <font key="NSFont" size="19" name="TimesNewRomanPSMT"/>
+                                            <font key="NSFont" size="14" name="TimesNewRomanPSMT"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -41,7 +41,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.99861653645833337" green="0.98063151041666663" blue="0.89564344618055558" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Knr-0J-sBP" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.5" id="2lY-VK-2Tc"/>
                             <constraint firstItem="Knr-0J-sBP" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="T2K-Pn-aU9"/>

@@ -9,6 +9,12 @@
 import UIKit
 import AVFoundation
 
+enum MessageType {
+    case normal
+    case imagemsg
+    case videomsg
+}
+
 class BubbleCell: UITableViewCell {
     
     @IBOutlet weak var msgLabel: UILabel!
@@ -19,8 +25,12 @@ class BubbleCell: UITableViewCell {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var activityLoader: UIActivityIndicatorView!
     
+    var roundCorners : UIRectCorner = []
+    var maskingImageName : String!
+    
     var videoURL : String!
     
+    var msgType : MessageType = .normal
     
     var player : AVPlayer?
     var playerLayer : AVPlayerLayer?
@@ -65,7 +75,10 @@ class BubbleCell: UITableViewCell {
         }
     }
     
-    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        makeRoundCellCorners()
+    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -86,24 +99,64 @@ class BubbleCell: UITableViewCell {
     }
     
     
-    func setupCell(_ msg : Message!){
+    func setupCell(_ msg : Message! , sendersImageURL : String? , withRoundCorners corners : UIRectCorner , maskingImageName : String){
+        print("setup")
+        if toIDImage != nil {
+            if let imageUrl = sendersImageURL {
+                toIDImage.loadImageUsingURLString(imageUrl)
+            }
+            toIDImage.layer.cornerRadius = 10
+            toIDImage.layer.masksToBounds = true
+        }
         
         if let msgText = msg.msg {
             msgLabel.text = msgText
+            msgType = .normal
         }
         else if let imgUrl = msg.msgImgURL{
             msgImageView.loadImageUsingURLString(imgUrl)
+            msgType = .imagemsg
         }
         
         if let vidURL = msg.msgVideoURL {
             playButton.isHidden = false
-            
+            msgType = .videomsg
             self.videoURL = vidURL
             self.playButton.addTarget(self, action: #selector(playVideo), for: UIControlEvents.touchUpInside)
             
         }
         
+        self.maskingImageName = maskingImageName
+//        makeRoundCellCorners(corners)
+        roundCorners = corners
     }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        print("nib awake")
+    }
+    
+    func makeRoundCellCorners() {
+        
+        
+//        var view : UIView
+//
+//        switch msgType {
+//        case .normal:
+//            view = containerView
+//        default :
+//            return
+////            view = msgImageView
+//        }
+//
+//        let maskPath = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: roundCorners, cornerRadii: CGSize(width: 0, height: 0))
+//        let shape = CAShapeLayer()
+//        shape.path = maskPath.cgPath
+//        self.layer.mask = shape
+        
+    }
+    
+    
     
     
     deinit {
