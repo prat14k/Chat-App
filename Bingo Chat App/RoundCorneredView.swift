@@ -16,7 +16,7 @@ class RoundCorneredView: UIView {
             setup()
         }
     }
-    @IBInspectable var minRadius : CGFloat = 5 {
+    @IBInspectable var minRadius : CGFloat = 4 {
         didSet {
             layer.cornerRadius = minRadius
         }

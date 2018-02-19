@@ -16,6 +16,8 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
     var messages = [Message]()
     var messagesKeys = [String]()
     
+    var keyboardHght : CGFloat!
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var containerView: UIView!
     
@@ -36,8 +38,7 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
                     self.setupNavBar(user)
                 }
             }
-            
-//            observeMessages()
+    
             fetchAllMessages()
         }
         
@@ -78,6 +79,7 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
                             self.tableView.scrollToRow(at: IndexPath(row: (count - 1), section: 0), at: UITableViewScrollPosition.bottom, animated: true)
                         }
                     }
+                    self.observeNewMessages()
                 }
                 
             })
@@ -280,13 +282,26 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
                                 let message = Message()
                                 message.setValuesForKeys(msgDict)
                                 
+                                var rowAnimation : UITableViewRowAnimation = .none
+                                
+                                if message.fromID == currentAppUser.uid {
+                                    rowAnimation = .right
+                                }
+                                else {
+                                    rowAnimation = .left
+                                }
+                                
                                 self.messages.append(message)
                                 let msgsCnt = self.messages.count
+                                
+                                var shouldReloadAll = false
+                                
                                 if msgsCnt > 1 {
                                     let msg2 = self.messages[msgsCnt - 1]
                                     let msg1 = self.messages[msgsCnt - 2]
                                     
                                     if (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)! {
+                                        shouldReloadAll = true
                                         self.messages.sort(by: { (msg1, msg2) -> Bool in
                                             return (msg1.timestamp?.doubleValue)! < (msg2.timestamp?.doubleValue)!
                                         })
@@ -295,10 +310,32 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
                                 }
                                 
                                 DispatchQueue.main.async {
-                                    self.tableView.reloadData()
-//                                    self.tableView.layoutIfNeeded()
-                                    if self.messages.count > 0 {
-                                        self.tableView.scrollToRow(at: IndexPath(row: (self.messages.count - 1), section: 0), at: UITableViewScrollPosition.bottom, animated: true)
+                                    if shouldReloadAll {
+                                        self.tableView.reloadData()
+                                    }
+                                    else{
+                                        if msgsCnt > 1 {
+                                            self.tableView.insertRows(at: [IndexPath(row: msgsCnt-1, section: 0)], with: rowAnimation)
+                                            self.tableView.reloadRows(at: [IndexPath(row: msgsCnt-2, section: 0)], with: .none)
+                                        }
+                                    }
+                                    if msgsCnt > 0 {
+                                        let tableContentHght = self.tableView.contentSize.height
+                                        let tableHght = self.tableView.frame.height
+                                        let tableVerticalInsets = self.tableView.contentInset.top + self.tableView.contentInset.bottom
+                                        
+                                        if (tableContentHght - tableHght + tableVerticalInsets) > 0 {
+                                            UIView.animate(withDuration: 0.2, animations: {
+                                                self.tableView.contentOffset = CGPoint(x: 0, y: (tableContentHght - tableHght + tableVerticalInsets))
+                                            }, completion: { (finished) in
+                                                
+                                            })
+                                        }
+//                                        UIView.animate(withDuration: 0.3, animations: {
+////                                            self.tableView.scrollToRow(at: IndexPath(row: (self.messages.count - 1), section: 0), at: UITableViewScrollPosition.bottom, animated: false)
+//                                        }, completion: { (finished) in
+////                                            self.tableView.reloadRows(at: [IndexPath(row: msgsCnt-1, section: 0)], with: rowAnimation)
+//                                        })
                                     }
                                 }
                             }
@@ -585,18 +622,38 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        keyboardHght = nil
         containerView.removeFromSuperview()
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         NotificationCenter.default.addObserver(self, selector: #selector(moveTableUp), name: Notification.Name.UIKeyboardWillShow, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(moveTableDown), name: Notification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(moveTableDown), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        if msgTF != nil {
+            if msgTF.isEditing {
+                if keyboardHght == nil {
+                    msgTF.resignFirstResponder()
+                    msgTF.becomeFirstResponder()
+                }
+                else{
+                    self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: keyboardHght - 50 + 10, right: 0)
+                    self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHght - 50, right: 0)
+                    self.tableView.scrollToRow(at: IndexPath(row: self.messages.count-1, section: 0), at: .bottom, animated: true)
+                }
+            }
+        }
     }
+    
+    
     
     func moveTableUp(notification:NSNotification){
         
@@ -605,18 +662,29 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
             let kbFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
             let kbRect = kbFrame.cgRectValue
             
-            self.tableViewBottomContraint.constant = kbRect.height + 5
-            self.view.layoutIfNeeded()
-            self.tableView.scrollToRow(at: IndexPath(row: self.messages.count-1, section: 0), at: .bottom, animated: true)
+            if kbRect.height > 120 {
+                
+                keyboardHght = kbRect.height
+                
+                self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: kbRect.height - 50 + 10, right: 0)
+                self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbRect.height - 50, right: 0)
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.tableView.scrollToRow(at: IndexPath(row: self.messages.count-1, section: 0), at: .bottom, animated: false)
+                }, completion: { (finished) in
+                    
+                })
+            }
+            
         }
     }
     
     func moveTableDown(){
         
         if(self.messages.count > 0){
-            self.tableViewBottomContraint.constant = 50
-            self.view.layoutIfNeeded()
-            self.tableView.scrollToRow(at: IndexPath(row: self.messages.count-1, section: 0), at: .bottom, animated: true)
+            UIView.animate(withDuration: 0.3, animations: {
+                self.tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+                self.tableView.scrollIndicatorInsets = UIEdgeInsets.zero
+            })
         }
     }
     
@@ -733,10 +801,5 @@ class ChatLogController: UIViewController, UITableViewDelegate,UITableViewDataSo
         }
         
     }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-    }
-    
     
 }

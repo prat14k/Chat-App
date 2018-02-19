@@ -52,6 +52,7 @@ extension UIImageView {
                     if self.tag != 191 {
                         self.layer.cornerRadius = self.frame.size.height/2.0
                     }
+                    self.backgroundColor = UIColor.clear
                     self.layer.masksToBounds = true
                 }
                 

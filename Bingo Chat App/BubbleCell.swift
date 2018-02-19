@@ -100,7 +100,7 @@ class BubbleCell: UITableViewCell {
     
     
     func setupCell(_ msg : Message! , sendersImageURL : String? , withRoundCorners corners : UIRectCorner , maskingImageName : String){
-        print("setup")
+    
         if toIDImage != nil {
             if let imageUrl = sendersImageURL {
                 toIDImage.loadImageUsingURLString(imageUrl)
@@ -133,7 +133,7 @@ class BubbleCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        print("nib awake")
+        
     }
     
     func makeRoundCellCorners() {
