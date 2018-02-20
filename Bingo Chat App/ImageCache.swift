@@ -14,7 +14,7 @@ let imgCache = NSCache<AnyObject, AnyObject>()
 
 extension UIImageView {
     
-    func loadImageUsingURLString(_ url : String!){
+    func loadImageUsingURLString(_ url : String!, isMessageCellImage : Bool = false){
         
         self.image = nil
         
@@ -49,11 +49,12 @@ extension UIImageView {
                     
                     self.image = imgData
                     
-                    if self.tag != 191 {
+                    if !isMessageCellImage  {
                         self.layer.cornerRadius = self.frame.size.height/2.0
                     }
                     self.backgroundColor = UIColor.clear
                     self.layer.masksToBounds = true
+                    self.clipsToBounds = true
                 }
                 
         }

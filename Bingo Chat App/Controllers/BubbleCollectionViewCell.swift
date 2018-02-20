@@ -29,7 +29,11 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var toIDImage: UIImageView!
     
     @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var msgImageView: UIImageView!
+    @IBOutlet weak var msgImageView: UIImageView! {
+        didSet {
+            msgImageView.isUserInteractionEnabled = true
+        }
+    }
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var activityLoader: UIActivityIndicatorView!
     
@@ -39,6 +43,12 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     
     var player : AVPlayer?
     var playerLayer : AVPlayerLayer?
+    
+    var normalImgRect: CGRect?
+    var zoomingImgView : UIImageView!
+    var zoomBGView: UIView!
+    var presentingController: UIViewController!
+    
     
     func playVideo(){
         
@@ -99,14 +109,24 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     }
     
     
+    func addActionGestures(presentingController : UIViewController) {
+        if msgType == .imagemsg {
+            self.presentingController = presentingController
+            self.presentingController.view.endEditing(true)
+            
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomAction))
+            gesture.numberOfTapsRequired = 1
+            msgImageView.addGestureRecognizer(gesture)
+        }
+    }
+    
+    
     func setupCell(_ msg : Message! , sendersImageURL : String?){
         
         if toIDImage != nil {
             if let imageUrl = sendersImageURL {
                 toIDImage.loadImageUsingURLString(imageUrl)
             }
-            toIDImage.layer.cornerRadius = 10
-            toIDImage.layer.masksToBounds = true
         }
         
         if let msgText = msg.msg {
@@ -116,7 +136,7 @@ class BubbleCollectionViewCell: UICollectionViewCell {
             msgType = .normal
         }
         else if let imgUrl = msg.msgImgURL{
-            msgImageView.loadImageUsingURLString(imgUrl)
+            msgImageView.loadImageUsingURLString(imgUrl,isMessageCellImage: true)
             msgType = .imagemsg
         }
         
@@ -129,6 +149,71 @@ class BubbleCollectionViewCell: UICollectionViewCell {
         }
         
     }
+    
+    
+    @IBAction func zoomAction(_ sender: UITapGestureRecognizer) {
+        
+        let imgView = sender.view as! UIImageView
+        normalImgRect = imgView.superview?.convert(imgView.frame, to: nil)
+        
+        zoomingImgView = UIImageView(frame: normalImgRect!)
+        zoomingImgView.image = imgView.image
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
+        gesture.numberOfTapsRequired = 1
+        zoomingImgView.isUserInteractionEnabled = true
+        zoomingImgView.addGestureRecognizer(gesture)
+        
+        if let keyWindow = UIApplication.shared.keyWindow {
+            
+            self.inputAccessoryView?.alpha = 0
+            
+            zoomBGView = UIView(frame: keyWindow.frame)
+            zoomBGView.backgroundColor = UIColor(white: 0, alpha: 0.85)
+            zoomBGView.alpha = 0
+            
+            let gesture1 = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
+            gesture1.numberOfTapsRequired = 1
+            zoomBGView.isUserInteractionEnabled = true
+            zoomBGView.addGestureRecognizer(gesture1)
+
+            self.presentingController.view.isUserInteractionEnabled = false
+
+            keyWindow.addSubview(zoomBGView)
+            keyWindow.addSubview(zoomingImgView)
+            
+            let newHght = (((normalImgRect?.size.height)! / (normalImgRect?.size.width)!) * keyWindow.frame.size.width)
+            
+            let zoomedImgRect = CGRect(x: 0, y: 0, width: keyWindow.frame.size.width, height: newHght)
+            
+            UIView.animate(withDuration: 0.34, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                self.zoomingImgView.frame = zoomedImgRect
+                self.zoomingImgView.center = keyWindow.center
+                
+                self.zoomBGView.alpha = 1
+            }, completion: nil)
+        }
+        
+    }
+    
+    @IBAction func zoomOutAction(_ sender: UITapGestureRecognizer) {
+        
+        UIView.animate(withDuration: 0.34, delay: 0, options: .curveEaseOut, animations: {
+            self.zoomingImgView.frame = self.normalImgRect!
+            
+            self.zoomBGView.alpha = 0
+            
+        }) { (finished) in
+            
+            self.presentingController.view.isUserInteractionEnabled = true
+            
+            self.inputAccessoryView?.alpha = 1
+            self.zoomingImgView.removeFromSuperview()
+            self.zoomBGView.removeFromSuperview()
+        }
+        
+    }
+    
     
 }
 

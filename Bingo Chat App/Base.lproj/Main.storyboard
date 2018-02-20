@@ -26,7 +26,7 @@
                         <viewControllerLayoutGuide type="bottom" id="DDm-4A-7QD"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="z48-fn-uqE">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1380"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jck-cH-qm5">
@@ -954,7 +954,7 @@
                                 </connections>
                             </tableView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vva-R3-cpX">
-                                <rect key="frame" x="0.0" y="64" width="320" height="366"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="1266"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="sSx-nz-4DT">
                                     <size key="itemSize" width="50" height="50"/>
@@ -963,8 +963,372 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentMessageCell" id="K7H-Pk-Dtf" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedImageMessageCell" id="3xa-MG-0p6" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
                                         <rect key="frame" x="35" y="0.0" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pf9-hS-hiu" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="0.5" width="162.5" height="49.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xj4-l1-4PH">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="49.5"/>
+                                                            <color key="backgroundColor" red="0.69019607843137254" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="Xj4-l1-4PH" secondAttribute="trailing" id="OLE-sH-jJQ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Xj4-l1-4PH" secondAttribute="bottom" id="Prv-cJ-5yc"/>
+                                                        <constraint firstItem="Xj4-l1-4PH" firstAttribute="top" secondItem="pf9-hS-hiu" secondAttribute="top" id="XiS-rd-uep"/>
+                                                        <constraint firstItem="Xj4-l1-4PH" firstAttribute="leading" secondItem="pf9-hS-hiu" secondAttribute="leading" id="cuL-ak-pmN"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="pf9-hS-hiu" secondAttribute="bottom" constant="0.5" id="BKG-Gh-0Fe"/>
+                                            <constraint firstItem="Xj4-l1-4PH" firstAttribute="width" secondItem="3xa-MG-0p6" secondAttribute="width" multiplier="0.65" id="PIc-ys-TOl"/>
+                                            <constraint firstItem="pf9-hS-hiu" firstAttribute="top" secondItem="3xa-MG-0p6" secondAttribute="top" constant="0.5" id="jFJ-hy-qP8"/>
+                                            <constraint firstItem="pf9-hS-hiu" firstAttribute="leading" secondItem="3xa-MG-0p6" secondAttribute="leading" constant="35" id="u01-pU-CZu"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="pf9-hS-hiu" id="Mxo-ge-ttS"/>
+                                            <outlet property="msgImageView" destination="Xj4-l1-4PH" id="J1V-cy-JKJ"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedUpImageMessageCell" id="rZ0-Zc-4ZG" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="50" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mst-Uf-GpE" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="5" width="162.5" height="45"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6aJ-mA-NL4">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="45"/>
+                                                            <color key="backgroundColor" red="0.69019607843137254" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="6aJ-mA-NL4" firstAttribute="leading" secondItem="mst-Uf-GpE" secondAttribute="leading" id="Joc-sO-4AV"/>
+                                                        <constraint firstAttribute="bottom" secondItem="6aJ-mA-NL4" secondAttribute="bottom" id="bjF-8s-AFK"/>
+                                                        <constraint firstAttribute="trailing" secondItem="6aJ-mA-NL4" secondAttribute="trailing" id="t1m-vX-z7d"/>
+                                                        <constraint firstItem="6aJ-mA-NL4" firstAttribute="top" secondItem="mst-Uf-GpE" secondAttribute="top" id="t3K-eZ-EC5"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="mst-Uf-GpE" secondAttribute="bottom" constant="0.5" id="0uF-KY-N10"/>
+                                            <constraint firstItem="mst-Uf-GpE" firstAttribute="leading" secondItem="rZ0-Zc-4ZG" secondAttribute="leading" constant="35" id="2Je-5N-bim"/>
+                                            <constraint firstItem="mst-Uf-GpE" firstAttribute="top" secondItem="rZ0-Zc-4ZG" secondAttribute="top" constant="5" id="4aZ-n9-2S9"/>
+                                            <constraint firstItem="6aJ-mA-NL4" firstAttribute="width" secondItem="rZ0-Zc-4ZG" secondAttribute="width" multiplier="0.65" id="mqq-oq-q3c"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="mst-Uf-GpE" id="ioM-EC-fU4"/>
+                                            <outlet property="msgImageView" destination="6aJ-mA-NL4" id="Y40-Ah-Lme"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedDownImageMessageCell" id="aln-f6-Hq8" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="100" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HcJ-Xj-Ngl" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="0.5" width="162.5" height="44.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cXb-cx-EWP">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="44.5"/>
+                                                            <color key="backgroundColor" red="0.69019607843137254" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="cXb-cx-EWP" firstAttribute="leading" secondItem="HcJ-Xj-Ngl" secondAttribute="leading" id="FHA-4c-2Bn"/>
+                                                        <constraint firstItem="cXb-cx-EWP" firstAttribute="top" secondItem="HcJ-Xj-Ngl" secondAttribute="top" id="RMQ-9T-Fb0"/>
+                                                        <constraint firstAttribute="bottom" secondItem="cXb-cx-EWP" secondAttribute="bottom" id="YwT-Li-o0a"/>
+                                                        <constraint firstAttribute="trailing" secondItem="cXb-cx-EWP" secondAttribute="trailing" id="szP-Yr-tfW"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="so2-TK-rwL">
+                                                    <rect key="frame" x="11" y="21" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="so2-TK-rwL" secondAttribute="height" multiplier="1:1" id="7ee-7g-rFU"/>
+                                                        <constraint firstAttribute="height" constant="20" id="tXk-gp-w5p"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="cXb-cx-EWP" firstAttribute="width" secondItem="aln-f6-Hq8" secondAttribute="width" multiplier="0.65" id="XpU-GV-qjv"/>
+                                            <constraint firstItem="HcJ-Xj-Ngl" firstAttribute="top" secondItem="aln-f6-Hq8" secondAttribute="top" constant="0.5" id="np3-vI-fpD"/>
+                                            <constraint firstItem="so2-TK-rwL" firstAttribute="bottom" secondItem="HcJ-Xj-Ngl" secondAttribute="bottom" constant="-4" id="o2n-R4-Y1I"/>
+                                            <constraint firstAttribute="bottom" secondItem="HcJ-Xj-Ngl" secondAttribute="bottom" constant="5" id="tj1-ji-C2V"/>
+                                            <constraint firstItem="so2-TK-rwL" firstAttribute="leading" secondItem="aln-f6-Hq8" secondAttribute="leading" constant="11" id="ufQ-lG-roa"/>
+                                            <constraint firstItem="HcJ-Xj-Ngl" firstAttribute="leading" secondItem="so2-TK-rwL" secondAttribute="trailing" constant="4" id="zZp-dB-PYu"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="HcJ-Xj-Ngl" id="CHW-uh-du8"/>
+                                            <outlet property="msgImageView" destination="cXb-cx-EWP" id="ZIe-6i-bgq"/>
+                                            <outlet property="toIDImage" destination="so2-TK-rwL" id="4Oa-0D-Wd2"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedUpDownImageMessageCell" id="UPy-ZM-5R4" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="150" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34B-og-Kvt" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="5" width="162.5" height="40"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JhO-HZ-cAE">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="40"/>
+                                                            <color key="backgroundColor" red="0.69019607843137254" green="0.70196078431372544" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="JhO-HZ-cAE" secondAttribute="trailing" id="9WO-RA-H5h"/>
+                                                        <constraint firstAttribute="bottom" secondItem="JhO-HZ-cAE" secondAttribute="bottom" id="Dh7-U9-pJh"/>
+                                                        <constraint firstItem="JhO-HZ-cAE" firstAttribute="leading" secondItem="34B-og-Kvt" secondAttribute="leading" id="K7a-K6-oCg"/>
+                                                        <constraint firstItem="JhO-HZ-cAE" firstAttribute="top" secondItem="34B-og-Kvt" secondAttribute="top" id="UKM-Ib-fVo"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CeN-8G-akG">
+                                                    <rect key="frame" x="11" y="21" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="8TK-cW-C0l"/>
+                                                        <constraint firstAttribute="width" secondItem="CeN-8G-akG" secondAttribute="height" multiplier="1:1" id="pdl-ST-wbS"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="CeN-8G-akG" firstAttribute="bottom" secondItem="34B-og-Kvt" secondAttribute="bottom" constant="-4" id="Vrt-fG-z3f"/>
+                                            <constraint firstAttribute="bottom" secondItem="34B-og-Kvt" secondAttribute="bottom" constant="5" id="ZmZ-3b-eS6"/>
+                                            <constraint firstItem="34B-og-Kvt" firstAttribute="top" secondItem="UPy-ZM-5R4" secondAttribute="top" constant="5" id="hSj-bc-Mcc"/>
+                                            <constraint firstItem="34B-og-Kvt" firstAttribute="leading" secondItem="CeN-8G-akG" secondAttribute="trailing" constant="4" id="hXl-za-XUu"/>
+                                            <constraint firstItem="JhO-HZ-cAE" firstAttribute="width" secondItem="UPy-ZM-5R4" secondAttribute="width" multiplier="0.65" id="r2y-Fq-qky"/>
+                                            <constraint firstItem="CeN-8G-akG" firstAttribute="leading" secondItem="UPy-ZM-5R4" secondAttribute="leading" constant="11" id="wMf-g3-APU"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="34B-og-Kvt" id="KVY-Nn-BIT"/>
+                                            <outlet property="msgImageView" destination="JhO-HZ-cAE" id="oa0-uS-6Ls"/>
+                                            <outlet property="toIDImage" destination="CeN-8G-akG" id="JJe-s9-OQW"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentImageMessageCell" id="ZGH-Ft-s0s" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="200" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uzw-MJ-U4c" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="0.5" width="162.5" height="49.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UU5-rp-P72">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="49.5"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="UU5-rp-P72" secondAttribute="bottom" id="IHW-rF-YLZ"/>
+                                                        <constraint firstItem="UU5-rp-P72" firstAttribute="top" secondItem="Uzw-MJ-U4c" secondAttribute="top" id="L5M-58-i36"/>
+                                                        <constraint firstAttribute="trailing" secondItem="UU5-rp-P72" secondAttribute="trailing" id="lXc-mV-YRs"/>
+                                                        <constraint firstItem="UU5-rp-P72" firstAttribute="leading" secondItem="Uzw-MJ-U4c" secondAttribute="leading" id="w9c-Wa-AQS"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="NO"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="Uzw-MJ-U4c" firstAttribute="top" secondItem="ZGH-Ft-s0s" secondAttribute="top" constant="0.5" id="OrI-gm-FCt"/>
+                                            <constraint firstItem="UU5-rp-P72" firstAttribute="width" secondItem="ZGH-Ft-s0s" secondAttribute="width" multiplier="0.65" id="liQ-PN-48C"/>
+                                            <constraint firstAttribute="trailing" secondItem="Uzw-MJ-U4c" secondAttribute="trailing" constant="14" id="oW4-tM-v76"/>
+                                            <constraint firstAttribute="bottom" secondItem="Uzw-MJ-U4c" secondAttribute="bottom" constant="0.5" id="osW-WT-NZl"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="Uzw-MJ-U4c" id="SJt-6b-7II"/>
+                                            <outlet property="msgImageView" destination="UU5-rp-P72" id="Ggs-2L-9dS"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentUpImageMessageCell" id="ZcH-PS-7mI" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="250" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pV1-Oi-pWO" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="5" width="162.5" height="45"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fct-Lf-Zsc">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="45"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="fct-Lf-Zsc" secondAttribute="bottom" id="6WH-lU-dHq"/>
+                                                        <constraint firstAttribute="trailing" secondItem="fct-Lf-Zsc" secondAttribute="trailing" id="CiH-ps-SMp"/>
+                                                        <constraint firstItem="fct-Lf-Zsc" firstAttribute="leading" secondItem="pV1-Oi-pWO" secondAttribute="leading" id="ecQ-8i-vvZ"/>
+                                                        <constraint firstItem="fct-Lf-Zsc" firstAttribute="top" secondItem="pV1-Oi-pWO" secondAttribute="top" id="lhm-g3-UZk"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="NO"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="pV1-Oi-pWO" secondAttribute="bottom" constant="0.5" id="89t-F7-Nes"/>
+                                            <constraint firstAttribute="trailing" secondItem="pV1-Oi-pWO" secondAttribute="trailing" constant="14" id="CZz-iX-7jn"/>
+                                            <constraint firstItem="fct-Lf-Zsc" firstAttribute="width" secondItem="ZcH-PS-7mI" secondAttribute="width" multiplier="0.65" id="I6q-PW-mrU"/>
+                                            <constraint firstItem="pV1-Oi-pWO" firstAttribute="top" secondItem="ZcH-PS-7mI" secondAttribute="top" constant="5" id="wmT-er-dLQ"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="pV1-Oi-pWO" id="Cs9-IT-G74"/>
+                                            <outlet property="msgImageView" destination="fct-Lf-Zsc" id="PAa-fw-6lY"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentDownImageMessageCell" id="xVc-4b-5Cz" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="300" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LsQ-p2-tvi" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="0.5" width="162.5" height="44.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ut3-8R-ahu">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="44.5"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="Ut3-8R-ahu" secondAttribute="trailing" id="EEb-lI-uXr"/>
+                                                        <constraint firstItem="Ut3-8R-ahu" firstAttribute="leading" secondItem="LsQ-p2-tvi" secondAttribute="leading" id="k2z-ru-VGL"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Ut3-8R-ahu" secondAttribute="bottom" id="qUu-ch-a6w"/>
+                                                        <constraint firstItem="Ut3-8R-ahu" firstAttribute="top" secondItem="LsQ-p2-tvi" secondAttribute="top" id="qWO-NB-QI0"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="LsQ-p2-tvi" secondAttribute="bottom" constant="5" id="7Dn-9j-8sk"/>
+                                            <constraint firstItem="LsQ-p2-tvi" firstAttribute="top" secondItem="xVc-4b-5Cz" secondAttribute="top" constant="0.5" id="UIs-0H-3Hp"/>
+                                            <constraint firstItem="Ut3-8R-ahu" firstAttribute="width" secondItem="xVc-4b-5Cz" secondAttribute="width" multiplier="0.65" id="nIi-5h-jSv"/>
+                                            <constraint firstAttribute="trailing" secondItem="LsQ-p2-tvi" secondAttribute="trailing" constant="14" id="vjE-4s-E3K"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="LsQ-p2-tvi" id="Vjt-SH-ED2"/>
+                                            <outlet property="msgImageView" destination="Ut3-8R-ahu" id="sTK-Vy-cux"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentUpDownImageMessageCell" id="Yea-Us-2kv" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="350" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h81-hI-CvO" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="5" width="162.5" height="40"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gYb-zg-seM">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="40"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="gYb-zg-seM" firstAttribute="leading" secondItem="h81-hI-CvO" secondAttribute="leading" id="Q4T-qk-z11"/>
+                                                        <constraint firstItem="gYb-zg-seM" firstAttribute="top" secondItem="h81-hI-CvO" secondAttribute="top" id="UE4-Hv-Bvf"/>
+                                                        <constraint firstAttribute="bottom" secondItem="gYb-zg-seM" secondAttribute="bottom" id="fem-aF-XJ6"/>
+                                                        <constraint firstAttribute="trailing" secondItem="gYb-zg-seM" secondAttribute="trailing" id="mMo-z4-yUL"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="h81-hI-CvO" firstAttribute="top" secondItem="Yea-Us-2kv" secondAttribute="top" constant="5" id="0Lj-u9-jhQ"/>
+                                            <constraint firstAttribute="bottom" secondItem="h81-hI-CvO" secondAttribute="bottom" constant="5" id="EpI-0k-dPJ"/>
+                                            <constraint firstItem="gYb-zg-seM" firstAttribute="width" secondItem="Yea-Us-2kv" secondAttribute="width" multiplier="0.65" id="dsy-ww-hED"/>
+                                            <constraint firstAttribute="trailing" secondItem="h81-hI-CvO" secondAttribute="trailing" constant="14" id="mm5-MH-F1j"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="h81-hI-CvO" id="cR5-to-Ehb"/>
+                                            <outlet property="msgImageView" destination="gYb-zg-seM" id="YfN-lO-Jck"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentMessageCell" id="K7H-Pk-Dtf" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="400" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1009,7 +1373,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentUpMessageCell" id="Z0K-gU-PGp" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="50" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="450" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1055,7 +1419,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentDownMessageCell" id="Vks-lz-a7U" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="100" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="500" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1101,7 +1465,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentUpDownMessageCell" id="YAG-4O-qJq" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="150" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="550" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1148,7 +1512,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedMessageCell" id="FWI-ND-blq" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="200" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="600" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1195,7 +1559,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedUpMessageCell" id="fjU-p4-Ybz" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="250" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="650" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1242,7 +1606,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedDownMessageCell" id="S6J-2K-kJu" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="300" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="700" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1299,7 +1663,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedUpDownMessageCell" id="d9O-pq-NMV" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="350" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="750" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1355,8 +1719,372 @@
                                             <outlet property="toIDImage" destination="ina-ap-zlD" id="9OD-l8-gm7"/>
                                         </connections>
                                     </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentVideoMessageCell" id="9tc-Uc-vuE" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="1150" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCs-ou-ULE" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="0.5" width="162.5" height="49.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nWz-tU-i82">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="49.5"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="nWz-tU-i82" secondAttribute="trailing" id="5B8-YW-m6H"/>
+                                                        <constraint firstItem="nWz-tU-i82" firstAttribute="top" secondItem="dCs-ou-ULE" secondAttribute="top" id="70L-tl-DeF"/>
+                                                        <constraint firstAttribute="bottom" secondItem="nWz-tU-i82" secondAttribute="bottom" id="KRe-4v-1M7"/>
+                                                        <constraint firstItem="nWz-tU-i82" firstAttribute="leading" secondItem="dCs-ou-ULE" secondAttribute="leading" id="fWr-u7-21S"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="NO"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="dCs-ou-ULE" firstAttribute="top" secondItem="9tc-Uc-vuE" secondAttribute="top" constant="0.5" id="GCf-2C-HHU"/>
+                                            <constraint firstAttribute="bottom" secondItem="dCs-ou-ULE" secondAttribute="bottom" constant="0.5" id="VJj-Qc-0UM"/>
+                                            <constraint firstItem="nWz-tU-i82" firstAttribute="width" secondItem="9tc-Uc-vuE" secondAttribute="width" multiplier="0.65" id="xDC-O9-DqR"/>
+                                            <constraint firstAttribute="trailing" secondItem="dCs-ou-ULE" secondAttribute="trailing" constant="14" id="xJg-A3-Xqb"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="dCs-ou-ULE" id="5GO-VI-NNr"/>
+                                            <outlet property="msgImageView" destination="nWz-tU-i82" id="E3M-90-UT5"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentUpVideoMessageCell" id="Ext-sT-WrM" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="850" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wr2-ft-U9u" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="5" width="162.5" height="45"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="maE-Q8-MhD">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="45"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="maE-Q8-MhD" firstAttribute="top" secondItem="Wr2-ft-U9u" secondAttribute="top" id="2Wv-ck-lIt"/>
+                                                        <constraint firstAttribute="trailing" secondItem="maE-Q8-MhD" secondAttribute="trailing" id="9Ha-7g-D3a"/>
+                                                        <constraint firstItem="maE-Q8-MhD" firstAttribute="leading" secondItem="Wr2-ft-U9u" secondAttribute="leading" id="HUA-zH-J9d"/>
+                                                        <constraint firstAttribute="bottom" secondItem="maE-Q8-MhD" secondAttribute="bottom" id="KgZ-l0-kyt"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="NO"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Wr2-ft-U9u" secondAttribute="trailing" constant="14" id="UQB-Qf-wAg"/>
+                                            <constraint firstItem="maE-Q8-MhD" firstAttribute="width" secondItem="Ext-sT-WrM" secondAttribute="width" multiplier="0.65" id="e8g-xV-uTz"/>
+                                            <constraint firstAttribute="bottom" secondItem="Wr2-ft-U9u" secondAttribute="bottom" constant="0.5" id="g32-Nu-1Vm"/>
+                                            <constraint firstItem="Wr2-ft-U9u" firstAttribute="top" secondItem="Ext-sT-WrM" secondAttribute="top" constant="5" id="h68-sR-cgY"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="Wr2-ft-U9u" id="7ex-bA-cQV"/>
+                                            <outlet property="msgImageView" destination="maE-Q8-MhD" id="5bt-Zp-qas"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentDownVideoMessageCell" id="LLN-lq-Q3T" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="800" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="23u-nM-Nrt" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="0.5" width="162.5" height="44.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a39-a9-nEJ">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="44.5"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="a39-a9-nEJ" firstAttribute="top" secondItem="23u-nM-Nrt" secondAttribute="top" id="BaE-mt-NUU"/>
+                                                        <constraint firstAttribute="trailing" secondItem="a39-a9-nEJ" secondAttribute="trailing" id="amk-KB-hgn"/>
+                                                        <constraint firstAttribute="bottom" secondItem="a39-a9-nEJ" secondAttribute="bottom" id="mog-fl-tBs"/>
+                                                        <constraint firstItem="a39-a9-nEJ" firstAttribute="leading" secondItem="23u-nM-Nrt" secondAttribute="leading" id="y7E-dO-Y0x"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="23u-nM-Nrt" secondAttribute="bottom" constant="5" id="URF-xH-YQV"/>
+                                            <constraint firstItem="23u-nM-Nrt" firstAttribute="top" secondItem="LLN-lq-Q3T" secondAttribute="top" constant="0.5" id="VxM-ZL-xUW"/>
+                                            <constraint firstAttribute="trailing" secondItem="23u-nM-Nrt" secondAttribute="trailing" constant="14" id="dtw-Im-b2K"/>
+                                            <constraint firstItem="a39-a9-nEJ" firstAttribute="width" secondItem="LLN-lq-Q3T" secondAttribute="width" multiplier="0.65" id="vx4-Wl-EKf"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="23u-nM-Nrt" id="dC0-tJ-o5Y"/>
+                                            <outlet property="msgImageView" destination="a39-a9-nEJ" id="vGR-QC-LXn"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentUpDownVideoMessageCell" id="f3r-OY-47t" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="1100" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5mM-k2-fjf" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="73.5" y="5" width="162.5" height="40"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tvq-YJ-fQi">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="40"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="tvq-YJ-fQi" secondAttribute="bottom" id="cix-J7-SdV"/>
+                                                        <constraint firstItem="tvq-YJ-fQi" firstAttribute="top" secondItem="5mM-k2-fjf" secondAttribute="top" id="qrk-ng-87n"/>
+                                                        <constraint firstAttribute="trailing" secondItem="tvq-YJ-fQi" secondAttribute="trailing" id="rcI-qq-MiE"/>
+                                                        <constraint firstItem="tvq-YJ-fQi" firstAttribute="leading" secondItem="5mM-k2-fjf" secondAttribute="leading" id="yh7-YI-5Xi"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="5mM-k2-fjf" secondAttribute="trailing" constant="14" id="TkO-nt-pfI"/>
+                                            <constraint firstAttribute="bottom" secondItem="5mM-k2-fjf" secondAttribute="bottom" constant="5" id="UwY-RK-srp"/>
+                                            <constraint firstItem="tvq-YJ-fQi" firstAttribute="width" secondItem="f3r-OY-47t" secondAttribute="width" multiplier="0.65" id="uYe-pw-zEg"/>
+                                            <constraint firstItem="5mM-k2-fjf" firstAttribute="top" secondItem="f3r-OY-47t" secondAttribute="top" constant="5" id="xWq-of-2PI"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="5mM-k2-fjf" id="sBT-Cy-Mo4"/>
+                                            <outlet property="msgImageView" destination="tvq-YJ-fQi" id="8CH-pe-dt0"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedVideoMessageCell" id="hvE-2C-aNJ" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="900" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCj-83-rQo" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="0.5" width="162.5" height="49.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="moi-BM-MkW">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="49.5"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="moi-BM-MkW" firstAttribute="leading" secondItem="xCj-83-rQo" secondAttribute="leading" id="BrN-2Q-mWF"/>
+                                                        <constraint firstItem="moi-BM-MkW" firstAttribute="top" secondItem="xCj-83-rQo" secondAttribute="top" id="PaS-0G-PMm"/>
+                                                        <constraint firstAttribute="bottom" secondItem="moi-BM-MkW" secondAttribute="bottom" id="UAm-Xd-NVH"/>
+                                                        <constraint firstAttribute="trailing" secondItem="moi-BM-MkW" secondAttribute="trailing" id="Zvf-9c-sFe"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="xCj-83-rQo" firstAttribute="top" secondItem="hvE-2C-aNJ" secondAttribute="top" constant="0.5" id="E2V-tY-XWh"/>
+                                            <constraint firstItem="xCj-83-rQo" firstAttribute="leading" secondItem="hvE-2C-aNJ" secondAttribute="leading" constant="35" id="UVA-WP-8tb"/>
+                                            <constraint firstAttribute="bottom" secondItem="xCj-83-rQo" secondAttribute="bottom" constant="0.5" id="WxF-OE-N5Y"/>
+                                            <constraint firstItem="moi-BM-MkW" firstAttribute="width" secondItem="hvE-2C-aNJ" secondAttribute="width" multiplier="0.65" id="cPV-Yv-2ld"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="xCj-83-rQo" id="lqz-Lh-bsX"/>
+                                            <outlet property="msgImageView" destination="moi-BM-MkW" id="R8f-QD-hCw"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedUpVideoMessageCell" id="wfj-cJ-XPD" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="1000" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DAd-Aj-ziv" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="5" width="162.5" height="45"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cKa-wc-RX8">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="45"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="cKa-wc-RX8" secondAttribute="trailing" id="AmA-0o-drd"/>
+                                                        <constraint firstAttribute="bottom" secondItem="cKa-wc-RX8" secondAttribute="bottom" id="pce-Wg-d4x"/>
+                                                        <constraint firstItem="cKa-wc-RX8" firstAttribute="leading" secondItem="DAd-Aj-ziv" secondAttribute="leading" id="sG4-pl-Yo1"/>
+                                                        <constraint firstItem="cKa-wc-RX8" firstAttribute="top" secondItem="DAd-Aj-ziv" secondAttribute="top" id="so7-kv-95U"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="cKa-wc-RX8" firstAttribute="width" secondItem="wfj-cJ-XPD" secondAttribute="width" multiplier="0.65" id="8Je-8K-cc1"/>
+                                            <constraint firstItem="DAd-Aj-ziv" firstAttribute="top" secondItem="wfj-cJ-XPD" secondAttribute="top" constant="5" id="G5z-hr-84y"/>
+                                            <constraint firstItem="DAd-Aj-ziv" firstAttribute="leading" secondItem="wfj-cJ-XPD" secondAttribute="leading" constant="35" id="tu7-54-d0w"/>
+                                            <constraint firstAttribute="bottom" secondItem="DAd-Aj-ziv" secondAttribute="bottom" constant="0.5" id="vME-vK-DUZ"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="DAd-Aj-ziv" id="Sx2-1A-Pw1"/>
+                                            <outlet property="msgImageView" destination="cKa-wc-RX8" id="Oh3-MC-V9C"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedDownVideoMessageCell" id="nv7-eJ-1Zp" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="1050" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kvW-9t-EHe" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="0.5" width="162.5" height="44.5"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZpP-ac-vNj">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="44.5"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="ZpP-ac-vNj" firstAttribute="leading" secondItem="kvW-9t-EHe" secondAttribute="leading" id="6kn-l7-y9y"/>
+                                                        <constraint firstItem="ZpP-ac-vNj" firstAttribute="top" secondItem="kvW-9t-EHe" secondAttribute="top" id="JnP-Rq-hI3"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ZpP-ac-vNj" secondAttribute="trailing" id="gOI-ap-aJ9"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ZpP-ac-vNj" secondAttribute="bottom" id="wpo-rL-pl2"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2tf-gd-GGc">
+                                                    <rect key="frame" x="11" y="21" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="GPz-yN-gN4"/>
+                                                        <constraint firstAttribute="width" secondItem="2tf-gd-GGc" secondAttribute="height" multiplier="1:1" id="u7h-wt-PPl"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="kvW-9t-EHe" firstAttribute="top" secondItem="nv7-eJ-1Zp" secondAttribute="top" constant="0.5" id="5CR-3L-itt"/>
+                                            <constraint firstItem="ZpP-ac-vNj" firstAttribute="width" secondItem="nv7-eJ-1Zp" secondAttribute="width" multiplier="0.65" id="5Ie-Vr-Ind"/>
+                                            <constraint firstItem="kvW-9t-EHe" firstAttribute="leading" secondItem="2tf-gd-GGc" secondAttribute="trailing" constant="4" id="Czw-we-LNC"/>
+                                            <constraint firstAttribute="bottom" secondItem="kvW-9t-EHe" secondAttribute="bottom" constant="5" id="HJs-cs-E3d"/>
+                                            <constraint firstItem="2tf-gd-GGc" firstAttribute="bottom" secondItem="kvW-9t-EHe" secondAttribute="bottom" constant="-4" id="VzL-5e-XQ8"/>
+                                            <constraint firstItem="2tf-gd-GGc" firstAttribute="leading" secondItem="nv7-eJ-1Zp" secondAttribute="leading" constant="11" id="rTW-rI-f5O"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="kvW-9t-EHe" id="Tcc-7o-nlc"/>
+                                            <outlet property="msgImageView" destination="ZpP-ac-vNj" id="C2C-Ih-vQV"/>
+                                            <outlet property="toIDImage" destination="2tf-gd-GGc" id="CUC-Ep-AZh"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recievedUpDownVideoMessageCell" id="vJ8-kr-MR9" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                        <rect key="frame" x="35" y="950" width="250" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcl-n2-Ega" customClass="RoundCorneredView" customModule="Bingo_Chat_App" customModuleProvider="target">
+                                                    <rect key="frame" x="35" y="5" width="162.5" height="40"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="46G-Ar-NZQ">
+                                                            <rect key="frame" x="0.0" y="0.0" width="162.5" height="40"/>
+                                                            <color key="backgroundColor" red="0.69019607839999997" green="0.70196078429999997" blue="0.77647058820000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="46G-Ar-NZQ" firstAttribute="leading" secondItem="pcl-n2-Ega" secondAttribute="leading" id="3So-62-UfK"/>
+                                                        <constraint firstItem="46G-Ar-NZQ" firstAttribute="top" secondItem="pcl-n2-Ega" secondAttribute="top" id="ZWy-GZ-Ab1"/>
+                                                        <constraint firstAttribute="bottom" secondItem="46G-Ar-NZQ" secondAttribute="bottom" id="c2M-Nc-Y8Y"/>
+                                                        <constraint firstAttribute="trailing" secondItem="46G-Ar-NZQ" secondAttribute="trailing" id="wKw-3n-ujs"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topLeftCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="topRightCorner" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="bottomRightCorner" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qpX-Q4-C1F">
+                                                    <rect key="frame" x="11" y="21" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="B0k-80-VAu"/>
+                                                        <constraint firstAttribute="width" secondItem="qpX-Q4-C1F" secondAttribute="height" multiplier="1:1" id="bIs-hJ-lKE"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="qpX-Q4-C1F" firstAttribute="leading" secondItem="vJ8-kr-MR9" secondAttribute="leading" constant="11" id="KP4-PF-17h"/>
+                                            <constraint firstItem="46G-Ar-NZQ" firstAttribute="width" secondItem="vJ8-kr-MR9" secondAttribute="width" multiplier="0.65" id="Xxv-cd-PfY"/>
+                                            <constraint firstItem="pcl-n2-Ega" firstAttribute="top" secondItem="vJ8-kr-MR9" secondAttribute="top" constant="5" id="brb-jR-8X7"/>
+                                            <constraint firstAttribute="bottom" secondItem="pcl-n2-Ega" secondAttribute="bottom" constant="5" id="e1V-eI-eYR"/>
+                                            <constraint firstItem="pcl-n2-Ega" firstAttribute="leading" secondItem="qpX-Q4-C1F" secondAttribute="trailing" constant="4" id="q3N-Ev-3Tm"/>
+                                            <constraint firstItem="qpX-Q4-C1F" firstAttribute="bottom" secondItem="pcl-n2-Ega" secondAttribute="bottom" constant="-4" id="r8Q-NE-fMB"/>
+                                        </constraints>
+                                        <size key="customSize" width="250" height="50"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="pcl-n2-Ega" id="6hw-yl-rzK"/>
+                                            <outlet property="msgImageView" destination="46G-Ar-NZQ" id="glL-Zq-9jI"/>
+                                            <outlet property="toIDImage" destination="qpX-Q4-C1F" id="2CF-TA-aal"/>
+                                        </connections>
+                                    </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dummyCell" id="WQf-T3-Sed" userLabel="dummyCell" customClass="BubbleCollectionViewCell" customModule="Bingo_Chat_App" customModuleProvider="target">
-                                        <rect key="frame" x="35" y="400" width="250" height="50"/>
+                                        <rect key="frame" x="35" y="1200" width="250" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
@@ -1432,6 +2160,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="mWj-2d-0CY"/>
+                    <size key="freeformSize" width="320" height="1380"/>
                     <connections>
                         <outlet property="collectionView" destination="vva-R3-cpX" id="kDo-NR-ed1"/>
                     </connections>

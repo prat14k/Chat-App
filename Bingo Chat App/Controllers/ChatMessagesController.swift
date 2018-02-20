@@ -25,10 +25,6 @@ class ChatMessagesController: UIViewController {
     var imageSendBtn: UIButton!
     var msgTF: UITextField!
 
-    var normalImgRect: CGRect?
-    var zoomingImgView : UIImageView!
-    var zoomBGView: UIView!
-    
     var user : Users?{
         
         didSet{
@@ -508,66 +504,6 @@ extension ChatMessagesController {
         }
     }
     
-    
-    @IBAction func zoomAction(_ sender: UITapGestureRecognizer) {
-        
-        let imgView = sender.view as! UIImageView
-        normalImgRect = imgView.superview?.convert(imgView.frame, to: nil)
-        
-        zoomingImgView = UIImageView(frame: normalImgRect!)
-        zoomingImgView.image = imgView.image
-        
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
-        gesture.numberOfTapsRequired = 1
-        zoomingImgView.isUserInteractionEnabled = true
-        zoomingImgView.addGestureRecognizer(gesture)
-        
-        if let keyWindow = UIApplication.shared.keyWindow {
-            
-            self.inputAccessoryView?.alpha = 0
-            
-            zoomBGView = UIView(frame: keyWindow.frame)
-            zoomBGView.backgroundColor = UIColor(white: 0, alpha: 0.85)
-            zoomBGView.alpha = 0
-            
-            let gesture1 = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
-            gesture1.numberOfTapsRequired = 1
-            zoomBGView.isUserInteractionEnabled = true
-            zoomBGView.addGestureRecognizer(gesture1)
-            
-            keyWindow.addSubview(zoomBGView)
-            keyWindow.addSubview(zoomingImgView)
-            
-            let newHght = (((normalImgRect?.size.height)! / (normalImgRect?.size.width)!) * keyWindow.frame.size.width)
-            
-            let zoomedImgRect = CGRect(x: 0, y: 0, width: keyWindow.frame.size.width, height: newHght)
-            
-            UIView.animate(withDuration: 0.34, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                self.zoomingImgView.frame = zoomedImgRect
-                self.zoomingImgView.center = keyWindow.center
-                
-                self.zoomBGView.alpha = 1
-            }, completion: nil)
-        }
-        
-    }
-    
-    @IBAction func zoomOutAction(_ sender: UITapGestureRecognizer) {
-        
-        UIView.animate(withDuration: 0.34, delay: 0, options: .curveEaseOut, animations: {
-            self.zoomingImgView.frame = self.normalImgRect!
-            
-            self.zoomBGView.alpha = 0
-            
-        }) { (finished) in
-            
-            self.inputAccessoryView?.alpha = 1
-            self.zoomingImgView.removeFromSuperview()
-            self.zoomBGView.removeFromSuperview()
-        }
-        
-    }
-    
 }
 
 
@@ -631,28 +567,20 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
         if msg.msg != nil {
             cellID = pref + cellID
         }
-        else{
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "dummyCell", for: indexPath)
-        }
-//        else if msg.msgVideoURL != nil {
+        else if msg.msgVideoURL != nil {
 //            toIDImageURL = nil
 //            cellID = pref + "Video" + cellID
-//        }
-//        else if msg.msgImgURL != nil {
-//            toIDImageURL = nil
-//            cellID = pref + "Image" + cellID
-//        }
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "dummyCell", for: indexPath)
+        }
+        else if msg.msgImgURL != nil {
+            cellID = pref + "Image" + cellID
+        }
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! BubbleCollectionViewCell
-
+        
         cell.setupCell(msg, sendersImageURL: toIDImageURL)
-
-//        if msg.msgVideoURL == nil ,(msg.msgImgURL) != nil{
-//            let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomAction))
-//            gesture.numberOfTapsRequired = 1
-//            cell.msgImageView.addGestureRecognizer(gesture)
-//        }
-
+        cell.addActionGestures(presentingController : self)
+        
         return cell
     }
 
@@ -677,7 +605,7 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
         }
         
         if let imgHght = msg.imgHght , let imgWidth = msg.imgWidth {
-            return CGSize(width: (collectionView.frame.size.width * 0.7), height: CGFloat(((imgHght.floatValue / imgWidth.floatValue) * Float(collectionView.frame.size.width * 0.7))) + verticalPadding)
+            return CGSize(width: collectionView.frame.size.width, height: CGFloat(((imgHght.floatValue / imgWidth.floatValue) * Float(collectionView.frame.size.width * 0.7))) + verticalPadding)
         }
         else if let msgText = msg.msg{
             let frameSize = estimatedFrameForText(msgText)
