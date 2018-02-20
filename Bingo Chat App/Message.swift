@@ -19,6 +19,9 @@ class Message: NSObject {
     
     var msgVideoURL : String!
     
+    var messageNeighbourType : MessageSameNeighbourType = .none
+    var messageContentType : MessageContentType = .normal
+    
     var imgHght : NSNumber!
     var imgWidth : NSNumber!
     

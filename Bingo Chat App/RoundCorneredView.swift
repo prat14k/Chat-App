@@ -11,7 +11,7 @@ import UIKit
 @IBDesignable
 class RoundCorneredView: UIView {
 
-    @IBInspectable var maxRadius : CGFloat = 14 {
+    @IBInspectable var maxRadius : CGFloat = 15 {
         didSet {
             setup()
         }

@@ -20,7 +20,6 @@ class ChatMessagesController: UIViewController {
     var keyboardHght : CGFloat!
     
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var containerView: UIView!
     
     var sendBtn: UIButton!
     var imageSendBtn: UIButton!
@@ -94,9 +93,10 @@ class ChatMessagesController: UIViewController {
                     })
                     DispatchQueue.main.async {
                         self.collectionView.reloadData()
+                        self.collectionView.setNeedsLayout()
+                        self.collectionView.layoutIfNeeded()
                         if count > 0 {
-                            
-                            self.collectionView.scrollToItem(at: IndexPath(row: (count - 1), section: 0), at: UICollectionViewScrollPosition.bottom, animated: true)
+                                self.collectionView.scrollToItem(at: IndexPath(row: (count - 1), section: 0), at: UICollectionViewScrollPosition.bottom, animated: true)
                         }
                     }
                     self.observeNewMessages()
@@ -187,6 +187,11 @@ class ChatMessagesController: UIViewController {
         
     }
     
+    func estimatedFrameForText(_ text : String) -> CGRect{
+        let size = CGSize(width: (self.collectionView.frame.width * 0.7), height: 1000)
+        return NSString(string: text).boundingRect(with: size, options: [NSStringDrawingOptions.usesLineFragmentOrigin , .usesFontLeading], attributes: [NSFontAttributeName : UIFont(name: "Helvetica Neue", size: 15)!], context: nil)
+    }
+    
     
     func observeNewMessages(){
         
@@ -206,15 +211,6 @@ class ChatMessagesController: UIViewController {
                                 
                                 let message = Message()
                                 message.setValuesForKeys(msgDict)
-                                
-//                                var rowAnimation : UIcollectionViewRowAnimation = .none
-                                
-//                                if message.fromID == currentAppUser.uid {
-//                                    rowAnimation = .right
-//                                }
-//                                else {
-//                                    rowAnimation = .left
-//                                }
                                 
                                 self.messages.append(message)
                                 let msgsCnt = self.messages.count
@@ -240,23 +236,14 @@ class ChatMessagesController: UIViewController {
                                     }
                                     else{
                                         if msgsCnt > 1 {
-//                                            self.collectionView.insertRows(at: [IndexPath(row: msgsCnt-1, section: 0)], with: rowAnimation)
-//                                            self.collectionView.reloadRows(at: [IndexPath(row: msgsCnt-2, section: 0)], with: .none)
+                                            self.collectionView.insertItems(at: [IndexPath(row: msgsCnt-1, section: 0)])
+                                            self.collectionView.reloadItems(at: [IndexPath(row: msgsCnt-2, section: 0)])
+                                            self.collectionView.setNeedsLayout()
+                                            self.collectionView.layoutIfNeeded()
                                         }
                                     }
                                     if msgsCnt > 0 {
-//                                        let tableContentHght = self.collectionView.contentSize.height
-//                                        let tableHght = self.collectionView.frame.height
-//                                        let tableVerticalInsets = self.collectionView.contentInset.top + self.collectionView.contentInset.bottom
-//
-//                                        if (tableContentHght - tableHght + tableVerticalInsets) > 0 {
-//                                            UIView.animate(withDuration: 0.2, animations: {
-//                                                self.collectionView.contentOffset = CGPoint(x: 0, y: (tableContentHght - tableHght + tableVerticalInsets))
-//                                            }, completion: { (finished) in
-//
-//                                            })
-//                                        }
-                                        
+                                        self.collectionView.scrollToItem(at: IndexPath(row: msgsCnt-1, section: 0), at: .bottom, animated: true)
                                     }
                                 }
                             }
@@ -430,7 +417,6 @@ extension ChatMessagesController {
         super.viewDidLoad()
         
         keyboardHght = nil
-        containerView.removeFromSuperview()
         imagePickerController.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
         
     }
@@ -605,77 +591,49 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
 //            }
 //
 //        }
+        
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-//        let msg = messages[indexPath.row]
-//        var cellID : String! = "MessageCell"
-//
-//        var myUID = ""
-//        if let currentUser = Auth.auth().currentUser {
-//            myUID = currentUser.uid
-//        }
-//
-//        var corners : UIRectCorner
-//        var pref : String
-//
-//        var toIDImageURL : String? = nil
-//
-//        var maskingImageName : String
-//
-//        if(msg.fromID == myUID){
-//            pref = "sent"
-//
-//            maskingImageName = pref
-//
-//            corners = [ .bottomLeft , .topLeft ]
-//
-//
-//            if (indexPath.row <= 0) || (messages[indexPath.row - 1].fromID != myUID) {
-//                corners.insert(.topRight)
-//                maskingImageName = "\(maskingImageName)2"
-//                pref = "\(pref)Up"
-//            }
-//
-//            if (indexPath.row >= (messages.count - 1)) || (messages[indexPath.row + 1].fromID != myUID) {
-//                corners.insert(.bottomRight)
-//                maskingImageName = "\(maskingImageName)1"
-//                pref = "\(pref)Down"
-//            }
-//
-//        }
-//        else{
-//            pref = "recieved"
-//
-//            maskingImageName = pref
-//
-//            corners = [ .topRight , .bottomRight ]
-//
-//            if let otherUser = user {
-//
-//                toIDImageURL = otherUser.profileImageUrl
-//
-//                if (indexPath.row <= 0) || (messages[indexPath.row - 1].fromID != otherUser.UID) {
-//                    corners.insert(.topLeft)
-//                    maskingImageName = "\(maskingImageName)2"
-//                    pref = "\(pref)Up"
-//                }
-//
-//                if (indexPath.row >= (messages.count - 1)) || (messages[indexPath.row + 1].fromID != otherUser.UID) {
-//                    corners.insert(.bottomLeft)
-//                    maskingImageName = "\(maskingImageName)1"
-//                    pref = "\(pref)Down"
-//                }
-//
-//            }
-//
-//        }
-//
-//        if msg.msg != nil {
-//            cellID = pref + cellID
-//        }
+        let msg = messages[indexPath.row]
+        var cellID : String! = "MessageCell"
+
+        var myUID = ""
+        if let currentUser = Auth.auth().currentUser {
+            myUID = currentUser.uid
+        }
+
+        var pref : String
+        let messageSenderUID = msg.fromID!
+        var toIDImageURL : String? = nil
+        
+        if(messageSenderUID == myUID){
+            pref = "sent"
+        }
+        else{
+            pref = "recieved"
+            if let sender = user {
+                toIDImageURL = sender.profileImageUrl
+            }
+        }
+
+        if (indexPath.row <= 0) || (messages[indexPath.row - 1].fromID != messageSenderUID) {
+            pref = "\(pref)Up"
+        }
+        
+        if (indexPath.row >= (messages.count - 1)) || (messages[indexPath.row + 1].fromID != messageSenderUID) {
+            pref = "\(pref)Down"
+        }
+
+        
+        if msg.msg != nil {
+            cellID = pref + cellID
+        }
+        else{
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "dummyCell", for: indexPath)
+        }
 //        else if msg.msgVideoURL != nil {
 //            toIDImageURL = nil
 //            cellID = pref + "Video" + cellID
@@ -684,23 +642,20 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
 //            toIDImageURL = nil
 //            cellID = pref + "Image" + cellID
 //        }
-//
-//        let cell = collectionView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! BubbleCell
-//
-//        cell.setupCell(msg, sendersImageURL: toIDImageURL, withRoundCorners: corners , maskingImageName: maskingImageName)
-//
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! BubbleCollectionViewCell
+
+        cell.setupCell(msg, sendersImageURL: toIDImageURL)
+
 //        if msg.msgVideoURL == nil ,(msg.msgImgURL) != nil{
-//
 //            let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomAction))
 //            gesture.numberOfTapsRequired = 1
 //            cell.msgImageView.addGestureRecognizer(gesture)
-//
 //        }
-//
-//        return cell
-        
-        return UICollectionViewCell()
+
+        return cell
     }
+
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        if let bubbleCell = cell as? BubbleCell {
@@ -710,15 +665,32 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-//        let msg = self.messages[indexPath.row]
-//
-//        if let imgHght = msg.imgHght , let imgWidth = msg.imgWidth {
-//            return CGFloat(((imgHght.floatValue / imgWidth.floatValue) * Float(collectionView.frame.size.width * 0.65)) + 10)
-//        }
-//        return UIcollectionViewAutomaticDimension
+        let msg = self.messages[indexPath.row]
+        var verticalPadding : CGFloat = 1
         
-        return CGSize.zero
+        let messageSenderUID = msg.fromID!
+        if (indexPath.row <= 0) || (messages[indexPath.row - 1].fromID != messageSenderUID) {
+            verticalPadding = verticalPadding + 4.5
+        }
+        if (indexPath.row >= (messages.count - 1)) || (messages[indexPath.row + 1].fromID != messageSenderUID) {
+            verticalPadding = verticalPadding + 4.5
+        }
+        
+        if let imgHght = msg.imgHght , let imgWidth = msg.imgWidth {
+            return CGSize(width: (collectionView.frame.size.width * 0.7), height: CGFloat(((imgHght.floatValue / imgWidth.floatValue) * Float(collectionView.frame.size.width * 0.7))) + verticalPadding)
+        }
+        else if let msgText = msg.msg{
+            let frameSize = estimatedFrameForText(msgText)
+            return CGSize(width: collectionView.frame.size.width, height: frameSize.height + 14 + 13 + verticalPadding)
+        }
+        
+        return CGSize(width: collectionView.frame.size.width, height: 1)
     }
+ 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.7
+    }
+    
     
 }
 

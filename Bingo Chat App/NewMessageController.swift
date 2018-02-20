@@ -99,9 +99,9 @@ class NewMessageController: UITableViewController {
         
         if(segue.identifier == "chatLogSegue"){
             
-            let vc = segue.destination as! ChatLogController
-            
-            vc.user = sender as? Users
+            if let vc = segue.destination as? ChatMessagesController {
+                vc.user = sender as? Users
+            }
             
         }
         

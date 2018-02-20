@@ -9,11 +9,11 @@
 import UIKit
 import AVFoundation
 
-enum MessageType {
-    case normal
-    case imagemsg
-    case videomsg
-}
+//enum MessageType {
+//    case normal
+//    case imagemsg
+//    case videomsg
+//}
 
 class BubbleCell: UITableViewCell {
     
@@ -30,7 +30,7 @@ class BubbleCell: UITableViewCell {
     
     var videoURL : String!
     
-    var msgType : MessageType = .normal
+    var msgType : MessageContentType = .normal
     
     var player : AVPlayer?
     var playerLayer : AVPlayerLayer?

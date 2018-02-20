@@ -393,13 +393,11 @@ class MessagesController: UITableViewController {
             
             let message = sender as! Message
             
-            let vc = segue.destination as? ChatLogController
-            
-            if let chatPartnerUID = message.chatPartnerID(){
-                
-                vc?.user = usersInfo[chatPartnerUID]
+            if let vc = segue.destination as? ChatMessagesController {
+                if let chatPartnerUID = message.chatPartnerID() {
+                    vc.user = usersInfo[chatPartnerUID]
+                }
             }
-            
         }
         
     }
