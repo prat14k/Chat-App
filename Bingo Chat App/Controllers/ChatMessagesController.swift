@@ -568,9 +568,7 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
             cellID = pref + cellID
         }
         else if msg.msgVideoURL != nil {
-//            toIDImageURL = nil
-//            cellID = pref + "Video" + cellID
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "dummyCell", for: indexPath)
+            cellID = pref + "Video" + cellID
         }
         else if msg.msgImgURL != nil {
             cellID = pref + "Image" + cellID

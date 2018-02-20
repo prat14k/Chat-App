@@ -25,6 +25,7 @@
 		ABDB42431F487E84000F1E9D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42421F487E84000F1E9D /* NewMessageController.swift */; };
 		ABDB42461F488740000F1E9D /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDB42451F488740000F1E9D /* Users.swift */; };
 		BB1C1C97203BEDC40033C9FA /* BubbleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C1C96203BEDC40033C9FA /* BubbleCollectionViewCell.swift */; };
+		BB255304203C51DE0096215E /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB255303203C42BB0096215E /* fontello.ttf */; };
 		BB9B672C2032F6D500EA0306 /* HexStr2IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9B672B2032F6D500EA0306 /* HexStr2IntExt.swift */; };
 		BB9B672E2032FA6B00EA0306 /* UIColorHexExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9B672D2032FA6B00EA0306 /* UIColorHexExt.swift */; };
 		BBED80FC203067B000732D7F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBED80FB203067B000732D7F /* Constants.swift */; };
@@ -57,6 +58,7 @@
 		ABDB42451F488740000F1E9D /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		B3174C63857D5ACE206C6B38 /* Pods-Bingo Chat App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bingo Chat App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bingo Chat App/Pods-Bingo Chat App.debug.xcconfig"; sourceTree = "<group>"; };
 		BB1C1C96203BEDC40033C9FA /* BubbleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BubbleCollectionViewCell.swift; path = Controllers/BubbleCollectionViewCell.swift; sourceTree = "<group>"; };
+		BB255303203C42BB0096215E /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		BB9B672B2032F6D500EA0306 /* HexStr2IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexStr2IntExt.swift; sourceTree = "<group>"; };
 		BB9B672D2032FA6B00EA0306 /* UIColorHexExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexExt.swift; sourceTree = "<group>"; };
 		BBED80FB203067B000732D7F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 		BBED80F820303E1B00732D7F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BB255303203C42BB0096215E /* fontello.ttf */,
 				BB9B672F2033045600EA0306 /* Hex2StrColor */,
 				ABBDBDF81F497D6800A4517C /* ImageCache.swift */,
 				AB500FBA1F8A3288002D1DC3 /* PaddedLabel.swift */,
@@ -268,6 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB255304203C51DE0096215E /* fontello.ttf in Resources */,
 				AB36D1161F43221200B3E2CD /* LaunchScreen.storyboard in Resources */,
 				BBFE384D2021ABF70088F701 /* GoogleService-Info.plist in Resources */,
 				AB36D1131F43221200B3E2CD /* Assets.xcassets in Resources */,

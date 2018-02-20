@@ -14,7 +14,7 @@ let imgCache = NSCache<AnyObject, AnyObject>()
 
 extension UIImageView {
     
-    func loadImageUsingURLString(_ url : String!, isMessageCellImage : Bool = false){
+    func loadImageUsingURLString(_ url : String!, isToBeCircled shouldBeCircled : Bool = true){
         
         self.image = nil
         
@@ -25,6 +25,14 @@ extension UIImageView {
         
         if let img = imgCache.object(forKey: url as AnyObject) as? UIImage{
             self.image = img
+            
+            if shouldBeCircled  {
+                self.layer.cornerRadius = self.frame.size.height/2.0
+            }
+            self.backgroundColor = UIColor.clear
+            self.layer.masksToBounds = true
+            self.clipsToBounds = true
+            
             return
         }
         
@@ -49,7 +57,7 @@ extension UIImageView {
                     
                     self.image = imgData
                     
-                    if !isMessageCellImage  {
+                    if shouldBeCircled  {
                         self.layer.cornerRadius = self.frame.size.height/2.0
                     }
                     self.backgroundColor = UIColor.clear

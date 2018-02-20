@@ -14,4 +14,7 @@ class Constants: NSObject {
     static let appLogo = "logo"
     static let userImagePlaceholder = "placeholderPic"
     
+    static let playIconText = "\u{e800}"
+    static let pauseIconText = "\u{e801}"
+    
 }

@@ -28,7 +28,7 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var messageTextView: UITextView!
     @IBOutlet weak var toIDImage: UIImageView!
     
-    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var playLabel: UILabel!
     @IBOutlet weak var msgImageView: UIImageView! {
         didSet {
             msgImageView.isUserInteractionEnabled = true
@@ -49,6 +49,7 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     var zoomBGView: UIView!
     var presentingController: UIViewController!
     
+    var imageURL : String!
     
     func playVideo(){
         
@@ -77,7 +78,7 @@ class BubbleCollectionViewCell: UICollectionViewCell {
             // {
             player = AVPlayer(playerItem: playerItem)
             
-            playButton.isHidden = true
+//            playButton.isHidden = true
             activityLoader.startAnimating()
             
             playerLayer = AVPlayerLayer(player: player)
@@ -104,13 +105,13 @@ class BubbleCollectionViewCell: UICollectionViewCell {
         playerItem.seek(to: kCMTimeZero)
         
         self.activityLoader.stopAnimating()
-        self.playButton.isHidden = false
+//        self.playButton.isHidden = false
         
     }
     
     
     func addActionGestures(presentingController : UIViewController) {
-        if msgType == .imagemsg {
+        if imageURL != nil {
             self.presentingController = presentingController
             self.presentingController.view.endEditing(true)
             
@@ -136,15 +137,17 @@ class BubbleCollectionViewCell: UICollectionViewCell {
             msgType = .normal
         }
         else if let imgUrl = msg.msgImgURL{
-            msgImageView.loadImageUsingURLString(imgUrl,isMessageCellImage: true)
+            self.imageURL = imgUrl
+            msgImageView.loadImageUsingURLString(imgUrl,isToBeCircled: false)
             msgType = .imagemsg
         }
         
         if let vidURL = msg.msgVideoURL {
-            playButton.isHidden = false
+//            playButton.isHidden = false
             msgType = .videomsg
             self.videoURL = vidURL
-            self.playButton.addTarget(self, action: #selector(playVideo), for: UIControlEvents.touchUpInside)
+            playLabel.text = Constants.playIconText
+//            self.playButton.addTarget(self, action: #selector(playVideo), for: UIControlEvents.touchUpInside)
             
         }
         
@@ -153,47 +156,55 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     
     @IBAction func zoomAction(_ sender: UITapGestureRecognizer) {
         
-        let imgView = sender.view as! UIImageView
-        normalImgRect = imgView.superview?.convert(imgView.frame, to: nil)
-        
-        zoomingImgView = UIImageView(frame: normalImgRect!)
-        zoomingImgView.image = imgView.image
-        
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
-        gesture.numberOfTapsRequired = 1
-        zoomingImgView.isUserInteractionEnabled = true
-        zoomingImgView.addGestureRecognizer(gesture)
-        
-        if let keyWindow = UIApplication.shared.keyWindow {
+        if let gestureTriggeringView = sender.view {
+            normalImgRect = gestureTriggeringView.superview?.convert(gestureTriggeringView.frame, to: nil)
             
-            self.inputAccessoryView?.alpha = 0
+            zoomingImgView = UIImageView(frame: normalImgRect!)
+            if let imgView = gestureTriggeringView as? UIImageView {
+                zoomingImgView.image = imgView.image
+            }
+            else{
+                if imageURL == nil {
+                    return
+                }
+                zoomingImgView.loadImageUsingURLString(imageURL, isToBeCircled: false)
+            }
+       
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
+            gesture.numberOfTapsRequired = 1
+            zoomingImgView.isUserInteractionEnabled = true
+            zoomingImgView.addGestureRecognizer(gesture)
             
-            zoomBGView = UIView(frame: keyWindow.frame)
-            zoomBGView.backgroundColor = UIColor(white: 0, alpha: 0.85)
-            zoomBGView.alpha = 0
-            
-            let gesture1 = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
-            gesture1.numberOfTapsRequired = 1
-            zoomBGView.isUserInteractionEnabled = true
-            zoomBGView.addGestureRecognizer(gesture1)
-
-            self.presentingController.view.isUserInteractionEnabled = false
-
-            keyWindow.addSubview(zoomBGView)
-            keyWindow.addSubview(zoomingImgView)
-            
-            let newHght = (((normalImgRect?.size.height)! / (normalImgRect?.size.width)!) * keyWindow.frame.size.width)
-            
-            let zoomedImgRect = CGRect(x: 0, y: 0, width: keyWindow.frame.size.width, height: newHght)
-            
-            UIView.animate(withDuration: 0.34, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                self.zoomingImgView.frame = zoomedImgRect
-                self.zoomingImgView.center = keyWindow.center
+            if let keyWindow = UIApplication.shared.keyWindow {
                 
-                self.zoomBGView.alpha = 1
-            }, completion: nil)
+                self.inputAccessoryView?.alpha = 0
+                
+                zoomBGView = UIView(frame: keyWindow.frame)
+                zoomBGView.backgroundColor = UIColor(white: 0, alpha: 0.85)
+                zoomBGView.alpha = 0
+                
+                let gesture1 = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
+                gesture1.numberOfTapsRequired = 1
+                zoomBGView.isUserInteractionEnabled = true
+                zoomBGView.addGestureRecognizer(gesture1)
+                
+                self.presentingController.view.isUserInteractionEnabled = false
+                
+                keyWindow.addSubview(zoomBGView)
+                keyWindow.addSubview(zoomingImgView)
+                
+                let newHght = (((normalImgRect?.size.height)! / (normalImgRect?.size.width)!) * keyWindow.frame.size.width)
+                
+                let zoomedImgRect = CGRect(x: 0, y: 0, width: keyWindow.frame.size.width, height: newHght)
+                
+                UIView.animate(withDuration: 0.34, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    self.zoomingImgView.frame = zoomedImgRect
+                    self.zoomingImgView.center = keyWindow.center
+                    
+                    self.zoomBGView.alpha = 1
+                }, completion: nil)
+            }
         }
-        
     }
     
     @IBAction func zoomOutAction(_ sender: UITapGestureRecognizer) {
