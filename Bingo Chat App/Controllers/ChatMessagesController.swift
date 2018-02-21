@@ -575,7 +575,7 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
         }
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! BubbleCollectionViewCell
-        
+        cell.tag = indexPath.row
         cell.setupCell(msg, sendersImageURL: toIDImageURL)
         cell.addActionGestures(presentingController : self)
         

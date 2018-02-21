@@ -17,6 +17,7 @@ extension UIImageView {
     func loadImageUsingURLString(_ url : String!, isToBeCircled shouldBeCircled : Bool = true){
         
         self.image = nil
+        let tag = self.tag
         
         if url == nil || url.isEmpty || url == ""{
             self.image = UIImage(named: "placeholderPic")
@@ -50,21 +51,22 @@ extension UIImageView {
                 
                 //print(response.result.value)
                 
-                if let imgData = UIImage(data: response.result.value!) {
-                    
-                    
-                    imgCache.setObject(imgData, forKey: url as AnyObject)
-                    
-                    self.image = imgData
-                    
-                    if shouldBeCircled  {
-                        self.layer.cornerRadius = self.frame.size.height/2.0
+                if let responseValue = response.result.value {
+                    if let imgData = UIImage(data: responseValue) {
+                        if tag == self.tag {
+                            imgCache.setObject(imgData, forKey: url as AnyObject)
+                            
+                            self.image = imgData
+                            
+                            if shouldBeCircled  {
+                                self.layer.cornerRadius = self.frame.size.height/2.0
+                            }
+                            self.backgroundColor = UIColor.clear
+                            self.layer.masksToBounds = true
+                            self.clipsToBounds = true
+                        }
                     }
-                    self.backgroundColor = UIColor.clear
-                    self.layer.masksToBounds = true
-                    self.clipsToBounds = true
                 }
-                
         }
         
     }

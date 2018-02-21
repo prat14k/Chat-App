@@ -35,7 +35,9 @@ class BubbleCollectionViewCell: UICollectionViewCell {
         }
     }
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var activityLoader: UIActivityIndicatorView!
+    
+    var playBtn : UIButton!
+    var loadingView : UIActivityIndicatorView!
     
     var videoURL : String!
     
@@ -43,6 +45,7 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     
     var player : AVPlayer?
     var playerLayer : AVPlayerLayer?
+    var playerItem : AVPlayerItem?
     
     var normalImgRect: CGRect?
     var zoomingImgView : UIImageView!
@@ -55,39 +58,22 @@ class BubbleCollectionViewCell: UICollectionViewCell {
         
         if videoURL != nil , let url = URL(string: videoURL){
             
-            let playerItem = AVPlayerItem(url: url)
+            playerItem = AVPlayerItem(url: url)
             NotificationCenter.default.addObserver(self, selector: #selector(finishedVideo), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem)
+            NotificationCenter.default.addObserver(self, selector: #selector(bufferedVideo), name: NSNotification.Name.AVPlayerItemPlaybackStalled, object: playerItem)
             
+            playerItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+            playerItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
+            playerItem?.addObserver(self, forKeyPath: "playbackBufferFull", options: .new, context: nil)
             
-            //            if(player != nil){
-            //
-            //                if(player?.error != nil){
-            //                    return
-            //                }
-            //
-            //                if (player?.rate != 0) {
-            //                    playButton.isHidden = false
-            //                    player?.pause()
-            //                }
-            //                else{
-            //                    playButton.isHidden = true
-            //                    player?.play()
-            //                }
-            //            }
-            //            else
-            // {
             player = AVPlayer(playerItem: playerItem)
             
-//            playButton.isHidden = true
-            activityLoader.startAnimating()
-            
             playerLayer = AVPlayerLayer(player: player)
-            playerLayer?.frame = containerView.bounds
+            playerLayer?.frame = zoomingImgView.bounds
             
-            containerView.layer.addSublayer(playerLayer!)
+            zoomingImgView.layer.addSublayer(playerLayer!)
             
             player?.play()
-            //}
         }
     }
     
@@ -95,18 +81,50 @@ class BubbleCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         NotificationCenter.default.removeObserver(self)
-        playerLayer?.removeFromSuperlayer()
         player?.pause()
+        playerLayer?.removeFromSuperlayer()
     }
     
     func finishedVideo(_ notification : Notification!){
-        
         let playerItem = notification.object as! AVPlayerItem
         playerItem.seek(to: kCMTimeZero)
+        playBtn.setTitle(Constants.playIconText, for: .normal)
+        loadingView.stopAnimating()
+        playBtn.tag = 2
+    }
+    func bufferedVideo(_ notification : Notification!){
+//        let playerItem = notification.object as! AVPlayerItem
+//        playerItem.seek(to: kCMTimeZero)
         
-        self.activityLoader.stopAnimating()
-//        self.playButton.isHidden = false
+        print("Buffered")
         
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if object is AVPlayerItem {
+            if let keyPath = keyPath {
+                switch keyPath {
+                case "playbackBufferEmpty":
+                    // Show loader
+                    playBtn.setTitle("", for: .normal)
+                    loadingView.startAnimating()
+                case "playbackLikelyToKeepUp":
+                    // Hide loader
+                    if playBtn.tag != 2 {
+                        playBtn.setTitle("", for: .normal)
+                        loadingView.stopAnimating()
+                    }
+                case "playbackBufferFull":
+                    // Hide loader
+                    if playBtn.tag != 2 {
+                        playBtn.setTitle("", for: .normal)
+                        loadingView.stopAnimating()
+                    }
+                default:
+                    print(keyPath)
+                }
+            }
+        }
     }
     
     
@@ -126,6 +144,7 @@ class BubbleCollectionViewCell: UICollectionViewCell {
         
         if toIDImage != nil {
             if let imageUrl = sendersImageURL {
+                toIDImage.tag = self.tag 
                 toIDImage.loadImageUsingURLString(imageUrl)
             }
         }
@@ -143,12 +162,9 @@ class BubbleCollectionViewCell: UICollectionViewCell {
         }
         
         if let vidURL = msg.msgVideoURL {
-//            playButton.isHidden = false
             msgType = .videomsg
             self.videoURL = vidURL
             playLabel.text = Constants.playIconText
-//            self.playButton.addTarget(self, action: #selector(playVideo), for: UIControlEvents.touchUpInside)
-            
         }
         
     }
@@ -170,10 +186,12 @@ class BubbleCollectionViewCell: UICollectionViewCell {
                 zoomingImgView.loadImageUsingURLString(imageURL, isToBeCircled: false)
             }
        
-            let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
-            gesture.numberOfTapsRequired = 1
-            zoomingImgView.isUserInteractionEnabled = true
-            zoomingImgView.addGestureRecognizer(gesture)
+            if msgType == .imagemsg {
+                let gesture = UITapGestureRecognizer(target: self, action: #selector(zoomOutAction))
+                gesture.numberOfTapsRequired = 1
+                zoomingImgView.isUserInteractionEnabled = true
+                zoomingImgView.addGestureRecognizer(gesture)
+            }
             
             if let keyWindow = UIApplication.shared.keyWindow {
                 
@@ -202,12 +220,69 @@ class BubbleCollectionViewCell: UICollectionViewCell {
                     self.zoomingImgView.center = keyWindow.center
                     
                     self.zoomBGView.alpha = 1
-                }, completion: nil)
+                }, completion: { (finished) in
+                    if self.msgType == .videomsg {
+                        self.addVideoControlButtons()
+                    }
+                })
+        
             }
         }
     }
     
+    @objc @IBAction func videoTappedAction(_ sender : UIButton) {
+        if sender.tag == 1 {
+            if !loadingView.isAnimating {
+                playBtn.setTitle(Constants.playIconText, for: .normal)
+            }
+//            loadingView.stopAnimating()
+            player?.pause()
+            sender.tag = 2
+        }
+        else {
+            playBtn.setTitle("", for: .normal)
+//            loadingView.startAnimating()
+            player?.play()
+            sender.tag = 1
+        }
+    }
+    
+    func addVideoControlButtons(){
+        if let keyWindow = UIApplication.shared.keyWindow {
+            playBtn = UIButton(frame: self.zoomingImgView.frame)
+            playBtn.titleLabel?.font = UIFont(name: "fontello", size: 70)
+            playBtn.setTitle("", for: .normal)
+            playBtn.setTitleColor(UIColor.white, for: .normal)
+            playBtn.tag = 1
+            playBtn.addTarget(self, action: #selector(videoTappedAction(_:)), for: .touchUpInside)
+            
+            loadingView = UIActivityIndicatorView(frame: self.zoomingImgView.frame)
+            loadingView.activityIndicatorViewStyle = .whiteLarge
+            loadingView.hidesWhenStopped = true
+            loadingView.startAnimating()
+            
+            if zoomBGView != nil {
+                keyWindow.addSubview(loadingView)
+                keyWindow.addSubview(playBtn)
+                self.playVideo()
+            }
+        }
+    }
+    
+    
     @IBAction func zoomOutAction(_ sender: UITapGestureRecognizer) {
+        
+        playBtn.isHidden = true
+        loadingView.isHidden = true
+        
+        NotificationCenter.default.removeObserver(self)
+        
+        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
+        
+        player?.pause()
+        playerLayer?.removeFromSuperlayer()
         
         UIView.animate(withDuration: 0.34, delay: 0, options: .curveEaseOut, animations: {
             self.zoomingImgView.frame = self.normalImgRect!
@@ -221,6 +296,16 @@ class BubbleCollectionViewCell: UICollectionViewCell {
             self.inputAccessoryView?.alpha = 1
             self.zoomingImgView.removeFromSuperview()
             self.zoomBGView.removeFromSuperview()
+            
+            if self.playBtn != nil {
+                self.playBtn.removeFromSuperview()
+                self.playBtn = nil
+            }
+            if self.loadingView != nil {
+                self.loadingView.removeFromSuperview()
+                self.loadingView = nil
+            }
+
         }
         
     }
