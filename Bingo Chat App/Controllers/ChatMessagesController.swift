@@ -92,7 +92,9 @@ class ChatMessagesController: UIViewController {
                         self.collectionView.setNeedsLayout()
                         self.collectionView.layoutIfNeeded()
                         if count > 0 {
-                                self.collectionView.scrollToItem(at: IndexPath(row: (count - 1), section: 0), at: UICollectionViewScrollPosition.bottom, animated: true)
+                            UIView.animate(withDuration: 0.4, animations: {
+                                self.collectionView.scrollToItem(at: IndexPath(row: (count - 1), section: 0), at: UICollectionViewScrollPosition.bottom, animated: false)
+                            })
                         }
                     }
                     self.observeNewMessages()
@@ -231,13 +233,15 @@ class ChatMessagesController: UIViewController {
                                         self.collectionView.reloadData()
                                     }
                                     else{
-                                        if msgsCnt > 1 {
+                                        if msgsCnt > 0 {
                                             self.collectionView.insertItems(at: [IndexPath(row: msgsCnt-1, section: 0)])
-                                            self.collectionView.reloadItems(at: [IndexPath(row: msgsCnt-2, section: 0)])
-                                            self.collectionView.setNeedsLayout()
-                                            self.collectionView.layoutIfNeeded()
+                                            if msgsCnt > 1 {
+                                                self.collectionView.reloadItems(at: [IndexPath(row: msgsCnt-2, section: 0)])
+                                            }
                                         }
                                     }
+                                    self.collectionView.setNeedsLayout()
+                                    self.collectionView.layoutIfNeeded()
                                     if msgsCnt > 0 {
                                         self.collectionView.scrollToItem(at: IndexPath(row: msgsCnt-1, section: 0), at: .bottom, animated: true)
                                     }
@@ -616,7 +620,6 @@ extension ChatMessagesController : UICollectionViewDataSource , UICollectionView
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0.7
     }
-    
     
 }
 

@@ -8,21 +8,38 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class NewMessageController: UITableViewController {
 
     var usersCollection = [Users]()
     
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
+        
         fetchUsers()
     }
 
     func fetchUsers(){
         
+        if Auth.auth().currentUser == nil {
+            return
+        }
+        
+        SVProgressHUD.show(withStatus: "Fetching users to chat")
+        
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             
-            
+            SVProgressHUD.dismiss()
             if let dictionary = snapshot.value as? [String:Any]{
                 
                 let user = Users()

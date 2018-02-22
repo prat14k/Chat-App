@@ -172,6 +172,10 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     
     @IBAction func zoomAction(_ sender: UITapGestureRecognizer) {
         
+        if let presentingVC = presentingController as? ChatMessagesController {
+            presentingVC.msgTF.resignFirstResponder()
+        }
+        
         if let gestureTriggeringView = sender.view {
             normalImgRect = gestureTriggeringView.superview?.convert(gestureTriggeringView.frame, to: nil)
             
@@ -272,17 +276,19 @@ class BubbleCollectionViewCell: UICollectionViewCell {
     
     @IBAction func zoomOutAction(_ sender: UITapGestureRecognizer) {
         
-        playBtn.isHidden = true
-        loadingView.isHidden = true
-        
-        NotificationCenter.default.removeObserver(self)
-        
-        playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
-        playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
-        playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
-        
-        player?.pause()
-        playerLayer?.removeFromSuperlayer()
+        if msgType == .videomsg {
+            playBtn.isHidden = true
+            loadingView.isHidden = true
+            
+            NotificationCenter.default.removeObserver(self)
+            
+            playerItem?.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+            playerItem?.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+            playerItem?.removeObserver(self, forKeyPath: "playbackBufferFull")
+            
+            player?.pause()
+            playerLayer?.removeFromSuperlayer()
+        }
         
         UIView.animate(withDuration: 0.34, delay: 0, options: .curveEaseOut, animations: {
             self.zoomingImgView.frame = self.normalImgRect!

@@ -20,6 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let defaults = UserDefaults.standard
+        if defaults.value(forKey: Constants.cookieKeyName) == nil {
+            if Auth.auth().currentUser != nil {
+                try? Auth.auth().signOut()
+            }
+            let vc = sb.instantiateViewController(withIdentifier: Constants.LoginWindowScreen)
+            self.window?.rootViewController = vc
+        }
+        
         return true
     }
 

@@ -1,0 +1,6 @@
+Phase 4 :
+
+-> TableView's/CollectionView's Background view when no entry
+-> Video Controls addition
+-> Chat Layout Change. (Adding Date and Time when messages are having a certain timeperiod difference)
+-> Showing Time when messages are clicked

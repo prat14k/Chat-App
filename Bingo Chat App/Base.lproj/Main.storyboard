@@ -23,7 +23,7 @@
         <!--Chat Messages Controller-->
         <scene sceneID="We0-bd-koV">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="lYR-EM-wn2" customClass="ChatMessagesController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatMessagesStoryboardID" automaticallyAdjustsScrollViewInsets="NO" id="lYR-EM-wn2" customClass="ChatMessagesController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LOR-9c-ngJ"/>
                         <viewControllerLayoutGuide type="bottom" id="DDm-4A-7QD"/>
@@ -956,7 +956,7 @@
                                     <outlet property="delegate" destination="lYR-EM-wn2" id="BPY-Mk-vG6"/>
                                 </connections>
                             </tableView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vva-R3-cpX">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" canCancelContentTouches="NO" keyboardDismissMode="interactive" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vva-R3-cpX">
                                 <rect key="frame" x="0.0" y="64" width="320" height="1266"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="sSx-nz-4DT">
@@ -2247,7 +2247,7 @@
         <!--Messages Controller-->
         <scene sceneID="Iyi-lq-abe">
             <objects>
-                <tableViewController id="fdq-4p-FNZ" customClass="MessagesController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="RecentChatStoryboardID" id="fdq-4p-FNZ" customClass="MessagesController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="uvd-5K-HxW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2334,7 +2334,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="logoutBtn" destination="WPK-7Z-MVi" id="ZWn-Xs-gix"/>
-                        <segue destination="uOf-3u-F9I" kind="presentation" identifier="loginScreenSegue" id="dVS-IT-kb1"/>
                         <segue destination="lYR-EM-wn2" kind="show" identifier="chatLogSegue" id="apm-TE-SnZ"/>
                     </connections>
                 </tableViewController>
@@ -2345,7 +2344,7 @@
         <!--New Message-->
         <scene sceneID="6zO-Zn-Y0c">
             <objects>
-                <tableViewController id="eqh-r8-Vy3" customClass="NewMessageController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NewChatStoryboardID" id="eqh-r8-Vy3" customClass="NewMessageController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="114" sectionHeaderHeight="28" sectionFooterHeight="28" id="xjU-FV-3uH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2427,7 +2426,7 @@
         <!--Login Controller-->
         <scene sceneID="IdK-5P-LQB">
             <objects>
-                <viewController id="uOf-3u-F9I" customClass="LoginController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatLoginStoryboardID" id="uOf-3u-F9I" customClass="LoginController" customModule="Bingo_Chat_App" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4Kv-60-q7o"/>
                         <viewControllerLayoutGuide type="bottom" id="R38-sS-hOs"/>
@@ -2652,6 +2651,7 @@
                         <outlet property="scrollViewBottomContraint" destination="5dK-tJ-B5Z" id="CaK-rr-4fZ"/>
                         <outlet property="segmentOutlet" destination="Znr-fN-55T" id="JSy-uH-MpX"/>
                         <outlet property="submitBtn" destination="9zh-vn-tGB" id="4n1-dV-NFx"/>
+                        <segue destination="h8N-Ua-KVe" kind="show" identifier="chatScreenSegue" id="7x9-4r-gyZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wEH-Ip-gtx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2773,7 +2773,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="fdq-4p-FNZ" kind="relationship" relationship="rootViewController" id="YfL-UL-cZt"/>
+                        <segue destination="fdq-4p-FNZ" kind="relationship" relationship="rootViewController" id="M1z-su-vGp"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohh-O6-rzN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2803,6 +2803,6 @@
         <image name="logo" width="250" height="250"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="apm-TE-SnZ"/>
+        <segue reference="EWq-Cq-mUv"/>
     </inferredMetricsTieBreakers>
 </document>

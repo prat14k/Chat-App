@@ -172,9 +172,14 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
                 AlertMsg.alertAction("Signin Error", error!.localizedDescription, self)
                 return
             }
-            
             print("Successful Signin")
-            self.dismiss(animated: true, completion: nil)
+            self.passwordTF.text = ""
+            self.emailTF.text = ""
+//            self.dismiss(animated: true, completion: nil)
+            
+            UserDefaults.standard.set(user?.uid, forKey: Constants.cookieKeyName)
+            
+            self.performSegue(withIdentifier: "chatScreenSegue", sender: nil)
         }
         
     }
@@ -198,7 +203,13 @@ class LoginController: UIViewController , UIImagePickerControllerDelegate , UINa
             
             print("Successful Addition User Info")
             
-            self.dismiss(animated: true, completion: nil)
+            self.passwordTF.text = ""
+            self.emailTF.text = ""
+            //            self.dismiss(animated: true, completion: nil)
+            
+            UserDefaults.standard.set(uid, forKey: Constants.cookieKeyName)
+            
+            self.performSegue(withIdentifier: "chatScreenSegue", sender: nil)
         })
     }
     

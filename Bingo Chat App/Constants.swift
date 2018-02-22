@@ -17,4 +17,11 @@ class Constants: NSObject {
     static let playIconText = "\u{e800}"
     static let pauseIconText = "\u{e801}"
     
+    static let recentChatsWindowScreen = "RecentChatStoryboardID"
+    static let newChatWindowScreen = "NewChatStoryboardID"
+    static let ChatWindowScreen = "ChatMessagesStoryboardID"
+    static let LoginWindowScreen = "ChatLoginStoryboardID"
+    
+    static let cookieKeyName = "COOKIE"
+    
 }

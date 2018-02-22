@@ -8,21 +8,27 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class MessagesController: UITableViewController {
 
     
     var messages = [Message]()
     var usersInfo = [String : Users]()
-    var msgIndexInfo = [String : NSNumber]()
+    var msgIndexInfo = [String : Int]()
     
     @IBOutlet weak var logoutBtn: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         newLogin = true
     }
    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -34,20 +40,30 @@ class MessagesController: UITableViewController {
     
     func checkIfUserLoggedIn(){
         
-        if Auth.auth().currentUser?.uid == nil {
+        if Auth.auth().currentUser == nil {
             self.perform(#selector(presentLoginScreen), with: nil, afterDelay: 0)
         }
         else{
             let uid = Auth.auth().currentUser?.uid
+            
+            if newLogin {
+                SVProgressHUD.show(withStatus: "Loading Profile")
+            }
+            
             Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
                 
+                SVProgressHUD.dismiss()
+                if !snapshot.exists() {
+                    self.perform(#selector(self.presentLoginScreen), with: nil, afterDelay: 0)
+                    return
+                }
                 if let dictionary = snapshot.value as? [String:Any] {
                     
                     let name = dictionary["name"] as! String
                     let imgUrl = dictionary["profileImageUrl"] as! String
                     
                     if(name == ""){
-                        self.navigationItem.title = "Your Chat People"
+                        self.navigationItem.title = "Your Recent Chats"
                         self.navigationItem.titleView = nil
                     }
                     else{
@@ -63,18 +79,17 @@ class MessagesController: UITableViewController {
                     
                     if(self.newLogin)
                     {
-                        self.observeMessages()
+//                        self.observeMessages()
+                        self.fetchPreviousChats()
                         self.newLogin = false
                     }
                 }
             })
         }
-        
-        
+    
     }
     
-    
-    func observeMessages(){
+    func fetchPreviousChats(){
         
         messages.removeAll()
         usersInfo.removeAll()
@@ -87,35 +102,132 @@ class MessagesController: UITableViewController {
         if(uid == nil || uid == ""){
             return
         }
+        SVProgressHUD.show(withStatus: "Fetching Previous chats")
+        let msgsDBRef = Database.database().reference().child("usrMsgHistory").child(uid!)
+        let usersDBRef = Database.database().reference().child("users")
+        msgsDBRef.observeSingleEvent(of: .value, with: { (msgHistorySnapShot) in
+            
+            if msgHistorySnapShot.exists() {
+                
+                if let msgInfoKeys = msgHistorySnapShot.value as? [String : String] {
+                    let cnt = msgInfoKeys.keys.count
+                    if cnt == 0 {
+                        self.observeNewMessages()
+                        return
+                    }
+                    for (userUID , msgUID) in msgInfoKeys {
+                        usersDBRef.child(userUID).observeSingleEvent(of: .value, with: { (userSnapShot) in
+                            
+                            if let dictionary = userSnapShot.value as? [String : Any] {
+                                
+                                let user = Users()
+                                user.UID = userSnapShot.key
+                                user.setValuesForKeys(dictionary)
+                              
+                                ref.child(msgUID).observeSingleEvent(of: .value, with: { (msgSnapshot) in
+                                    
+                                    if let msgDict = msgSnapshot.value as? [String:Any]{
+                                        
+                                        let message = Message()
+                                        message.setValuesForKeys(msgDict)
+                                        
+                                        self.messages.append(message)
+                                        self.usersInfo[userSnapShot.key] = user
+                                        
+                                        if self.messages.count == cnt {
+                                            self.messages.sort(by: { (msg1, msg2) -> Bool in
+                                                return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
+                                            })
+                                            DispatchQueue.main.async {
+                                                self.tableView.reloadData()
+                                                self.observeNewMessages()
+                                            }
+                                            var ind = 0
+                                            for elem in self.messages {
+                                                if let chatPartnerUID = elem.chatPartnerID() {
+                                                    self.msgIndexInfo[chatPartnerUID] = ind
+                                                }
+                                                ind+=1
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                }, withCancel: nil)
+                            }
+                            
+                        }, withCancel: nil)
+                    }
+                    
+                }
+                
+            }
+            else{
+                self.observeNewMessages()
+            }
+        }, withCancel: nil)
+    }
+    
+    
+    
+    
+    
+    func observeNewMessages(){
+        SVProgressHUD.dismiss()
+        let ref = Database.database().reference().child("messages")
+        let uid = Auth.auth().currentUser?.uid
+        
+        if(uid == nil || uid == ""){
+            return
+        }
+        
         let msgsDBRef = Database.database().reference().child("usrMsgHistory").child(uid!)
         msgsDBRef.observe(.childAdded, with: { (snapShot) in
             
             if let msgUID = snapShot.value as? String{
                 
-                ref.child(msgUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                if self.msgIndexInfo[msgUID] != nil {
+                    return
+                }
+                if self.usersInfo[snapShot.key] != nil {
+                    return
+                }
+                
+                ref.child(msgUID).observeSingleEvent(of: .value, with: { (msgsnapshot) in
                     
-                    if let msgDict = snapshot.value as? [String:Any]{
+                    if let msgDict = msgsnapshot.value as? [String:Any]{
 
                         let message = Message()
                         message.setValuesForKeys(msgDict)
                         
-                        self.messages.append(message)
-                        
-                        self.messages.sort(by: { (msg1, msg2) -> Bool in
-                            return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
-                        })
-                        
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
-                        
-                        var ind = 0
-                        for elem in self.messages {
-                            if let chatPartnerUID = elem.chatPartnerID() {
-                                self.msgIndexInfo[chatPartnerUID] = NSNumber(value: ind)
+                        let usersRef = Database.database().reference().child("users").child(snapShot.key)
+                        usersRef.observeSingleEvent(of: .value, with: { (userssnapShot) in
+                            if let dictionary = userssnapShot.value as? [String : Any] {
+                                let user = Users()
+                                user.UID = userssnapShot.key
+                                user.setValuesForKeys(dictionary)
+                                self.usersInfo[userssnapShot.key] = user
+                                
+                                self.messages.append(message)
+                                
+                                self.messages.sort(by: { (msg1, msg2) -> Bool in
+                                    return (msg1.timestamp?.doubleValue)! > (msg2.timestamp?.doubleValue)!
+                                })
+                                
+                                DispatchQueue.main.async {
+                                    self.tableView.reloadData()
+                                }
+                                
+                                var ind = 0
+                                for elem in self.messages {
+                                    if let chatPartnerUID = elem.chatPartnerID() {
+                                        self.msgIndexInfo[chatPartnerUID] = ind
+                                    }
+                                    ind+=1
+                                }
+                                
                             }
-                            ind+=1
-                        }
+                        }, withCancel: nil)
                         
                     }
                     
@@ -136,7 +248,7 @@ class MessagesController: UITableViewController {
                         let message = Message()
                         message.setValuesForKeys(msgDict)
                         
-                        let msgInd = self.msgIndexInfo[snapShot.key]?.intValue
+                        let msgInd = self.msgIndexInfo[snapShot.key]
                         
                         self.messages[msgInd!] = message
                         
@@ -151,7 +263,7 @@ class MessagesController: UITableViewController {
                         var ind = 0
                         for elem in self.messages {
                             if let chatPartnerUID = elem.chatPartnerID() {
-                                self.msgIndexInfo[chatPartnerUID] = NSNumber(value: ind)
+                                self.msgIndexInfo[chatPartnerUID] = ind
                             }
                             ind+=1
                         }
@@ -221,6 +333,13 @@ class MessagesController: UITableViewController {
         
         do{
             try Auth.auth().signOut()
+            
+            messages.removeAll()
+            usersInfo.removeAll()
+            self.tableView.reloadData()
+            newLogin = true
+            UserDefaults.standard.removeObject(forKey: Constants.cookieKeyName)
+            self.navigationController?.dismiss(animated: true, completion: nil)
         }
         catch let logoutErr {
             print("Logout Error: ", logoutErr)
@@ -228,12 +347,6 @@ class MessagesController: UITableViewController {
             AlertMsg.alertAction("Logout Error", logoutErr.localizedDescription, self)
         }
         
-        
-        messages.removeAll()
-        usersInfo.removeAll()
-        self.tableView.reloadData()
-        newLogin = true
-        self.perform(#selector(presentLoginScreen), with: nil, afterDelay: 0.1)
     }
     
     
@@ -332,30 +445,26 @@ class MessagesController: UITableViewController {
         if(editingStyle == UITableViewCellEditingStyle.delete){
             
             if let uid = Auth.auth().currentUser?.uid{
-            
-                if let message = self.messages[indexPath.row] as? Message {
+                let message = self.messages[indexPath.row]
+                if let chatPartnerUID = message.chatPartnerID() {
                     
-                    if let chatPartnerUID = message.chatPartnerID() {
-                        
-                        let baseRef = Database.database().reference()
-                        baseRef.child("usrMsgHistory").child(uid).child(chatPartnerUID).removeValue()
-                        baseRef.child("userMsgDB").child(uid).child(chatPartnerUID).removeValue()
-                        
-                        self.messages.remove(at: indexPath.row)
-                        self.msgIndexInfo.removeValue(forKey: chatPartnerUID)
-                        self.usersInfo.removeValue(forKey: chatPartnerUID)
-                        
-                        var ind = 0
-                        for elem in self.messages {
-                            if let chatPartnerUID = elem.chatPartnerID() {
-                                self.msgIndexInfo[chatPartnerUID] = NSNumber(value: ind)
-                            }
-                            ind+=1
+                    let baseRef = Database.database().reference()
+                    baseRef.child("usrMsgHistory").child(uid).child(chatPartnerUID).removeValue()
+                    baseRef.child("userMsgDB").child(uid).child(chatPartnerUID).removeValue()
+                    
+                    self.messages.remove(at: indexPath.row)
+                    self.msgIndexInfo.removeValue(forKey: chatPartnerUID)
+                    self.usersInfo.removeValue(forKey: chatPartnerUID)
+                    
+                    var ind = 0
+                    for elem in self.messages {
+                        if let chatPartnerUID = elem.chatPartnerID() {
+                            self.msgIndexInfo[chatPartnerUID] = ind
                         }
-                        
-                        self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.top)
-                        
+                        ind+=1
                     }
+                    
+                    self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.top)
                     
                 }
                 
